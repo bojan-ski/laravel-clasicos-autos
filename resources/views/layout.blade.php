@@ -9,22 +9,21 @@
     {{-- tailwind import --}}
     @vite('resources/css/app.css')
 
+    {{-- custom css --}}
+    <link rel="stylesheet" href="{{asset('/css/style.css')}}">
+
     {{-- title --}}
     <title>Clasicos Autos</title>
 </head>
 
-<body>
-    <header>
-        header
-    </header>
+<body class="bg-amber-100">
+    <x-appLayout.header/>
 
     <main>
         {{ $slot }}
     </main>
 
-    <footer>
-        footer
-    </footer>
+    <x-appLayout.footer/>
 </body>
 
 </html>
