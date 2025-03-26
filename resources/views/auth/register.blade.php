@@ -6,7 +6,7 @@
             <div class="pr-0 md:pr-5">
                 <x-page-header label='Register' />
 
-                <form method="POST" action="{{route('register.store')}}">
+                <form method="POST" action="{{route('register.store')}}" class="mb-5">
                     @csrf
 
                     {{-- username --}}
@@ -32,13 +32,19 @@
                     {{-- submit button --}}
                     <x-button type='submit' label='Register' />
                 </form>
+
+                <div class="text-center">
+                    <p>
+                        Already have an account? <a class="text-blue-500 hover:text-blue-600 font-bold" href="{{ route('login') }}">Login</a>
+                    </p>
+                </div>
             </div>
 
             <div class="pl-5 border-l hidden md:block">
                 <img src="https://placehold.co/600x600" alt="">
             </div>
 
-        </div>
+        </div>        
     </div>
 
 </x-layout>

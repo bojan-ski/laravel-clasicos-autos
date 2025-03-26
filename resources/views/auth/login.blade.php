@@ -6,7 +6,7 @@
             <div class="pr-0 md:pr-5">
                 <x-page-header label='Login' />
 
-                <form method="POST" action="{{route('login.authenticate')}}">
+                <form method="POST" action="{{route('login.authenticate')}}" class="mb-5">
                     @csrf
 
                     {{-- email --}}
@@ -20,6 +20,16 @@
                     {{-- submit button --}}
                     <x-button type='submit' label='Register' />
                 </form>
+
+                <div class="flex items-center justify-between">                    
+                    <p>
+                        Don't have an account? <a class="text-blue-500 hover:text-blue-600 font-bold" href="{{ route('register') }}">Register</a>
+                    </p>
+                    
+                    <p>
+                        Can't remember your password? <a class="text-blue-500 hover:text-blue-600 font-bold" href="{{ route('forgot-password') }}">Reset password</a>
+                    </p>
+                </div>
             </div>
 
             <div class="pl-5 border-l hidden md:block">
