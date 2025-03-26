@@ -6,8 +6,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -40,7 +40,7 @@ class AuthController extends Controller
     {
         return view('auth.login');
     }
-    
+
     public function authenticate(Request $request): RedirectResponse
     {
         // check user provided credentials
@@ -48,21 +48,21 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:64',
             'password' => 'required|string'
         ]);
-        
+
         // if all is good - login user
-        if(Auth::attempt($userCredentials)){
+        if (Auth::attempt($userCredentials)) {
             $request->session()->regenerate();
-            
+
             return redirect()->route('home.index')->with('success', 'You have logged in');
         }
-        
+
         // if bad credentials - redirect user
         return redirect()->back()->withErrors([
             'email' => 'Bad credentials',
             'password' => 'Bad credentials'
         ]);
     }
-    
+
     public function forgotPassword(): View
     {
         return view('auth.forgotPassword');
@@ -81,7 +81,7 @@ class AuthController extends Controller
         $user = User::where('email', $userCredentials['email'])->first();
 
         // check if provided safe word is related to the provided email
-        if(!$user || $user->safe_word !== $userCredentials['safe_word']){
+        if (!$user || $user->safe_word !== $userCredentials['safe_word']) {
             return redirect()->back()->withErrors([
                 'email' => 'Bad credentials',
                 'safe_word' => 'Bad credentials'
@@ -91,8 +91,19 @@ class AuthController extends Controller
         // if all is good - updated password
         $user->password = Hash::make($userCredentials['password']);
         $user->save();
-        
+
         // redirect user
         return redirect()->route('login')->with('success', 'Account created. You can login now.');
-    }    
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // redirect user
+        return redirect()->route('home.index')->with('success', 'You have logged out!');
+    }
 }

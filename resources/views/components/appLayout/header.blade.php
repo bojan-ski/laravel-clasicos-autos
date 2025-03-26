@@ -57,12 +57,22 @@
             </a>
         </div>
         <div class="navbar-end">
+            @auth
+            <a class="btn text-md mx-2 bg-blue-600 text-white hover:bg-blue-500">
+                List Car
+            </a>
+            {{-- logout button --}}
+            <x-logout-button />
+            @else
+            {{-- register --}}
             <a href="{{ route('register') }}" class="btn text-md mx-2 bg-yellow-600 text-white hover:bg-yellow-500">
                 Register
             </a>
+            {{-- login --}}
             <a href="{{ route('login') }}" class="btn text-md mx-2 bg-yellow-600 text-white hover:bg-yellow-500">
                 Login
             </a>
+            @endauth
         </div>
     </div>
 </header>
