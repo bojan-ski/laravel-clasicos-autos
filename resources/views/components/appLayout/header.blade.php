@@ -57,10 +57,10 @@
             </a>
         </div>
         <div class="navbar-end">
-            <a class="btn text-md mx-2 bg-yellow-600 text-white hover:bg-yellow-500">
+            <a href="{{ route('register') }}" class="btn text-md mx-2 bg-yellow-600 text-white hover:bg-yellow-500">
                 Register
             </a>
-            <a class="btn text-md mx-2 bg-yellow-600 text-white hover:bg-yellow-500">
+            <a href="{{ route('login') }}" class="btn text-md mx-2 bg-yellow-600 text-white hover:bg-yellow-500">
                 Login
             </a>
         </div>
