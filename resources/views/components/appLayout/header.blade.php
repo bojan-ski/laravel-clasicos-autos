@@ -43,7 +43,7 @@
 
         {{-- desktop --}}
         <div class="hidden lg:block navbar-center">
-            <a class="btn text-md mx-2 hover:bg-yellow-500 bg-yellow-500">
+            <a href="/" class="btn text-md mx-2 hover:bg-yellow-500 bg-yellow-500">
                 Home
             </a>
             <a class="btn text-md mx-2 hover:bg-yellow-500">
