@@ -1,6 +1,6 @@
 <x-layout>
-    <div class="container mx-auto mt-10">
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">            
+    <div class="car-listings-page container mx-auto mt-10">
+        <section class="car-listings grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">            
             @forelse ($listings as $listing)
             <x-car-listing-card :listing="$listing" />
             @empty

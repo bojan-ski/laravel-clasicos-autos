@@ -19,6 +19,7 @@ Route::middleware('guest')->group(function(){
     Route::put('/forgot-password', [AuthController::class, 'resetPassword'])->name('forgot-password.update');
 
     Route::get('/listings', [CarListingController::class, 'index'])->name('listings');
+    Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 });
 
 Route::middleware('auth')->group(function(){

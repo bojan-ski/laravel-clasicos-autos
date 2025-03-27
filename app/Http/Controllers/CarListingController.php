@@ -37,9 +37,9 @@ class CarListingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(CarListing $listing):View
     {
-        //
+        return view('carListing.show')->with('listing', $listing);
     }
 
     /**

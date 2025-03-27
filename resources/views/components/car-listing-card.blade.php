@@ -21,7 +21,7 @@
             </p>
         </div>
         <div class="flex items-center justify-between">
-            <a class="font-semibold bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded cursor-pointer focus:outline-none">
+            <a href="{{ route('listings.show', $listing->id) }}" class="font-semibold bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded cursor-pointer focus:outline-none">
                 See Details
             </a>
             <h5 class="text-end font-semibold text-lg">
