@@ -37,7 +37,7 @@ class CarListingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CarListing $listing):View
+    public function show(CarListing $listing): View
     {
         return view('carListing.show')->with('listing', $listing);
     }
@@ -65,4 +65,31 @@ class CarListingController extends Controller
     {
         //
     }
+
+    /**
+     * Search the specified resource - search option
+     */
+    public function search(Request $request): View
+    {
+        $searchTerm = strtolower($request->get('search_term'));
+
+        $query = CarListing::query();
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->whereRaw("LOWER(name) like ?", ['%' . $searchTerm . '%'])
+                    ->orWhereRaw('LOWER(make) like ?', ['%' . $searchTerm . '%'])
+                    ->orWhereRaw('LOWER(model) like ?', ['%' . $searchTerm . '%']);
+            });
+        }
+
+        $listings = $query->paginate(12);
+
+        return view('carListing.index')->with('listings', $listings);
+    }
+
+    /**
+     * Search the specified resource - filter option
+     */
+    public function filter(Request $request) {}
 }
