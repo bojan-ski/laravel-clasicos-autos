@@ -46,7 +46,7 @@
             <a href="/" class="btn text-md mx-2 hover:bg-yellow-500 bg-yellow-500">
                 Home
             </a>
-            <a class="btn text-md mx-2 hover:bg-yellow-500">
+            <a href="{{ route('listings') }}" class="btn text-md mx-2 hover:bg-yellow-500">
                 Listings
             </a>
             <a class="btn text-md mx-2 hover:bg-yellow-500">

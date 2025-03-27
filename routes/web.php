@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarListingController;
 
 Route::get('/', function () {
     return view('home.index');
@@ -16,6 +17,8 @@ Route::middleware('guest')->group(function(){
 
     Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
     Route::put('/forgot-password', [AuthController::class, 'resetPassword'])->name('forgot-password.update');
+
+    Route::get('/listings', [CarListingController::class, 'index'])->name('listings');
 });
 
 Route::middleware('auth')->group(function(){
