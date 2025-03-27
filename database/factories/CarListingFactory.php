@@ -18,7 +18,6 @@ class CarListingFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
             'make' => $this->faker->randomElement(['Ford', 'Chevrolet', 'Buick', 'Cadillac', 'Mercedes-Benz', 'Volkswagen']),
