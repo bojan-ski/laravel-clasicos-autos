@@ -19,6 +19,130 @@ class CarListingController extends Controller
     }
 
     /**
+     * Search the specified resource - search option
+     */
+    public function search(Request $request): View
+    {
+        $searchTerm = strtolower($request->get('search_term'));
+
+        $query = CarListing::query();
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->whereRaw("LOWER(name) like ?", ['%' . $searchTerm . '%'])
+                    ->orWhereRaw('LOWER(make) like ?', ['%' . $searchTerm . '%'])
+                    ->orWhereRaw('LOWER(model) like ?', ['%' . $searchTerm . '%']);
+            });
+        }
+
+        // sorting
+        $query->orderBy('created_at', 'desc');
+
+        // results
+        $listings = $query->paginate(12)->appends(['search_term' => $searchTerm]);
+
+        // display view
+        return view('carListing.index')->with('listings', $listings);
+    }
+
+    /**
+     * Display advance search/filter page.
+     */
+    public function showAdvanceSearch(): View
+    {
+        return view('carListing.advance_search');
+    }
+
+    /**
+     * Search the specified resource - filter option
+     */
+    public function filter(Request $request)
+    {
+        $query = CarListing::query();
+
+        // Collect all filter parameters
+        $filterParams = $request->except(['page']);
+
+        // model
+        if ($request->filled('model')) {
+            $query->where('model', 'like', '%' . $request->model . '%');
+        }
+
+        // date 
+        if ($request->filled('year_from') && $request->filled('year_to')) {
+            $query->whereBetween('year', [
+                $request->year_from,
+                $request->year_to
+            ]);
+        }
+
+        // mileage
+        if ($request->filled('mileage')) {
+            $query->where('mileage', '<=', $request->mileage);
+        }
+
+        // price
+        if ($request->filled('price_from') && $request->filled('price_to')) {
+            $query->whereBetween('price', [
+                $request->price_from,
+                $request->price_to
+            ]);
+        }
+
+        // color
+        if ($request->filled('exterior_color')) {
+            $query->where('exterior_color', 'like', '%' . $request->exterior_color . '%');
+        }
+
+        if ($request->filled('interior_color')) {
+            $query->where('interior_color', 'like', '%' . $request->interior_color . '%');
+        }
+
+        // Location Filters
+        if ($request->filled('city')) {
+            $query->where('location_city', 'like', '%' . $request->city . '%');
+        }
+
+        if ($request->filled('state')) {
+            $query->where('location_state', 'like', '%' . $request->state . '%');
+        }
+
+        // selected options
+        $selectedOptions = [
+            'make',
+            'transmission',
+            'fuel_type',
+            'engine_size',
+            'engine_type',
+            'odometer',
+            'exterior_condition',
+            'interior_condition',
+            'seat_material',
+            'engine_history',
+            'engine_condition',
+            'body_type',
+            'restoration_history',
+            'license_plate_type',
+            'original_parts_percentage'
+        ];
+
+        foreach ($selectedOptions as $option) {
+            if ($request->filled($option)) {
+                $query->where($option, $request->input($option));
+            }
+        }
+
+        // sorting
+        $query->orderBy('created_at', 'desc');
+
+        // results
+        $result = $query->paginate(12)->appends($filterParams);
+
+        // display view
+        return view('carListing.advance_search')->with('result', $result);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -65,31 +189,4 @@ class CarListingController extends Controller
     {
         //
     }
-
-    /**
-     * Search the specified resource - search option
-     */
-    public function search(Request $request): View
-    {
-        $searchTerm = strtolower($request->get('search_term'));
-
-        $query = CarListing::query();
-
-        if ($searchTerm) {
-            $query->where(function ($q) use ($searchTerm) {
-                $q->whereRaw("LOWER(name) like ?", ['%' . $searchTerm . '%'])
-                    ->orWhereRaw('LOWER(make) like ?', ['%' . $searchTerm . '%'])
-                    ->orWhereRaw('LOWER(model) like ?', ['%' . $searchTerm . '%']);
-            });
-        }
-
-        $listings = $query->paginate(12);
-
-        return view('carListing.index')->with('listings', $listings);
-    }
-
-    /**
-     * Search the specified resource - filter option
-     */
-    public function filter(Request $request) {}
 }

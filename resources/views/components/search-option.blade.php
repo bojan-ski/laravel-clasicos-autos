@@ -7,7 +7,7 @@
 </form>
 
 <p>
-    If you you are searching for a specific car, check out the: <a href="{{ 'listings.filter' }}"
+    If you you are searching for a specific car, check out the: <a href="{{ route('listings.showAdvanceSearch') }}"
         class="text-blue-500 hover:text-blue-600 font-bold">
         Advance Search
     </a>

@@ -36,7 +36,7 @@ class CarListingFactory extends Factory
             'seat_material' => $this->faker->randomElement(['Leather', 'Cloth', 'Vinyl', 'Velour']),
             'engine_history' => $this->faker->randomElement(['Original Engine', 'Replaced Engine', 'Rebuilt Engine']),
             'engine_condition' => $this->faker->randomElement(['Running', 'Needs Tuning', 'Not Running', 'Rebuilt Engine', 'Original Factory Engine']),
-            'price' => $this->faker->randomFloat(2, 5000, 100000),
+            'price' => $this->faker->randomNumber(5),
             'location_city' => $this->faker->city(),
             'location_state' => $this->faker->state(),
             'images' => json_encode([
