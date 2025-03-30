@@ -16,7 +16,7 @@
 
         {{-- pagination --}}
         <section class="pagination-option px-4 mt-2 mb-10">
-            {{$listings->links()}}
+            {{ $listings->links() }}
         </section>
     </div>
 </x-layout>

@@ -15,7 +15,7 @@ class CarListing extends Model
         'user_id',
         'name',
         'description',
-        'make',
+        'car_maker',
         'model',
         'year',
         'mileage',

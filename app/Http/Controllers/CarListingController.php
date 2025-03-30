@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\CarListing;
+use App\Models\CarMaker;
 
 class CarListingController extends Controller
 {
@@ -13,7 +14,7 @@ class CarListingController extends Controller
      */
     public function index(): View
     {
-        $listings = CarListing::latest()->paginate(12);
+        $listings = CarListing::latest()->paginate(12);        
 
         return view('carListing.index')->with('listings', $listings);
     }
@@ -30,7 +31,7 @@ class CarListingController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->whereRaw("LOWER(name) like ?", ['%' . $searchTerm . '%'])
-                    ->orWhereRaw('LOWER(make) like ?', ['%' . $searchTerm . '%'])
+                    ->orWhereRaw('LOWER(car_maker) like ?', ['%' . $searchTerm . '%'])
                     ->orWhereRaw('LOWER(model) like ?', ['%' . $searchTerm . '%']);
             });
         }
@@ -50,7 +51,9 @@ class CarListingController extends Controller
      */
     public function showAdvanceSearch(): View
     {
-        return view('carListing.advance_search');
+        $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
+
+        return view('carListing.advance_search')->with('carMakers', $carMakers);
     }
 
     /**
@@ -58,6 +61,9 @@ class CarListingController extends Controller
      */
     public function filter(Request $request)
     {
+        $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
+
+        // RUN QUERY
         $query = CarListing::query();
 
         // Collect all filter parameters
@@ -68,13 +74,6 @@ class CarListingController extends Controller
             $query->where('model', 'like', '%' . $request->model . '%');
         }
 
-        // date 
-        if ($request->filled('year_from') && $request->filled('year_to')) {
-            $query->whereBetween('year', [
-                $request->year_from,
-                $request->year_to
-            ]);
-        }
 
         // mileage
         if ($request->filled('mileage')) {
@@ -86,6 +85,14 @@ class CarListingController extends Controller
             $query->whereBetween('price', [
                 $request->price_from,
                 $request->price_to
+            ]);
+        }
+
+        // date 
+        if ($request->filled('year_from') && $request->filled('year_to')) {
+            $query->whereBetween('year', [
+                $request->year_from,
+                $request->year_to
             ]);
         }
 
@@ -107,9 +114,13 @@ class CarListingController extends Controller
             $query->where('location_state', 'like', '%' . $request->state . '%');
         }
 
+        if ($request->filled('zipcode')) {
+            $query->where('location_zipcode', 'like', '%' . $request->zipcode . '%');
+        }
+
         // selected options
         $selectedOptions = [
-            'make',
+            'car_maker',
             'transmission',
             'fuel_type',
             'engine_size',
@@ -123,7 +134,7 @@ class CarListingController extends Controller
             'body_type',
             'restoration_history',
             'license_plate_type',
-            'original_parts_percentage'
+            'documentation_status'
         ];
 
         foreach ($selectedOptions as $option) {
@@ -136,10 +147,13 @@ class CarListingController extends Controller
         $query->orderBy('created_at', 'desc');
 
         // results
-        $result = $query->paginate(12)->appends($filterParams);
+        $advanceSearchResult = $query->paginate(12)->appends($filterParams);
 
         // display view
-        return view('carListing.advance_search')->with('result', $result);
+        return view('carListing.advance_search')->with([
+            'carMakers' => $carMakers,
+            'advanceSearchResult' => $advanceSearchResult
+        ]);
     }
 
     /**

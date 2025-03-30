@@ -4,8 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\CarListing;
 use App\Models\User;
+use App\Models\CarMaker;
+use App\Models\CarListing;
 
 class DummyCarListingSeeder extends Seeder
 {
@@ -14,10 +15,13 @@ class DummyCarListingSeeder extends Seeder
      */
     public function run(): void
     {      
-        CarListing::factory(50)->create([
+        CarListing::factory(100)->create([
             'user_id' => function () {
                 return User::where('role', 'app_user')->inRandomOrder()->first()->id;
-            }
+            },
+            'car_maker' => function () {
+                return CarMaker::inRandomOrder()->first()->name;
+            },
         ]);
     }
 }

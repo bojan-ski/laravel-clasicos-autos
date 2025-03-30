@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class SearchOption extends Component
+class AdvanceSearchOption extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class SearchOption extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.carListingPage.search-option');
+        return view('components.carListingPage.advance-search-option');
     }
 }

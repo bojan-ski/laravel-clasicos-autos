@@ -18,12 +18,12 @@
                 </div>
                 <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                     <li class="mb-3">
-                        <a class="btn text-md mx-2 hover:bg-yellow-500">
+                        <a href="/" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('/') ? 'bg-yellow-500' : '' }}">
                             Home
                         </a>
                     </li>
                     <li class="mb-3">
-                        <a class="btn text-md mx-2 hover:bg-yellow-500">
+                        <a href="{{ route('listings') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('listings') ? 'bg-yellow-500' : '' }}">
                             Listings
                         </a>
                     </li>
@@ -43,10 +43,10 @@
 
         {{-- desktop --}}
         <div class="hidden lg:block navbar-center">
-            <a href="/" class="btn text-md mx-2 hover:bg-yellow-500 bg-yellow-500">
+            <a href="/" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('/') ? 'bg-yellow-500' : '' }}">
                 Home
             </a>
-            <a href="{{ route('listings') }}" class="btn text-md mx-2 hover:bg-yellow-500">
+            <a href="{{ route('listings') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('listings') ? 'bg-yellow-500' : '' }}">
                 Listings
             </a>
             <a class="btn text-md mx-2 hover:bg-yellow-500">
@@ -65,11 +65,11 @@
             <x-logout-button />
             @else
             {{-- register --}}
-            <a href="{{ route('register') }}" class="btn text-md mx-2 bg-yellow-600 text-white hover:bg-yellow-500">
+            <a href="{{ route('register') }}" class="btn text-md mx-2 text-white hover:bg-yellow-500 {{ request()->is('register') ? 'bg-yellow-500' : 'bg-yellow-600' }}">
                 Register
             </a>
             {{-- login --}}
-            <a href="{{ route('login') }}" class="btn text-md mx-2 bg-yellow-600 text-white hover:bg-yellow-500">
+            <a href="{{ route('login') }}" class="btn text-md mx-2  text-white hover:bg-yellow-500 {{ request()->is('login') ? 'bg-yellow-500' : 'bg-yellow-600' }}">
                 Login
             </a>
             @endauth

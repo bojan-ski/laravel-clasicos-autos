@@ -20,7 +20,6 @@ class CarListingFactory extends Factory
         return [
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
-            'make' => $this->faker->randomElement(['Ford', 'Chevrolet', 'Buick', 'Cadillac', 'Mercedes-Benz', 'Volkswagen']),
             'model' => $this->faker->randomElement(['Bel Air', 'Mustang', 'Corvette', 'Beetle', 'Camaro', 'Thunderbird']),
             'year' => $this->faker->numberBetween(1920, 1985),
             'mileage' => $this->faker->numberBetween(1000, 200000),
@@ -36,9 +35,10 @@ class CarListingFactory extends Factory
             'seat_material' => $this->faker->randomElement(['Leather', 'Cloth', 'Vinyl', 'Velour']),
             'engine_history' => $this->faker->randomElement(['Original Engine', 'Replaced Engine', 'Rebuilt Engine']),
             'engine_condition' => $this->faker->randomElement(['Running', 'Needs Tuning', 'Not Running', 'Rebuilt Engine', 'Original Factory Engine']),
-            'price' => $this->faker->randomNumber(5),
+            'price' => $this->faker->numberBetween(10000, 100000),
             'location_city' => $this->faker->city(),
             'location_state' => $this->faker->state(),
+            'location_zipcode' => substr($this->faker->postcode(), 0, 5),
             'images' => json_encode([
                 'https://placehold.co/640x480.png?text=Car+1',
                 'https://placehold.co/640x480.png?text=Car+2',
@@ -51,7 +51,7 @@ class CarListingFactory extends Factory
             ]),
             'body_type' => $this->faker->randomElement(['Coupe', 'Sedan', 'Convertible', 'Wagon']),
             'restoration_history' => $this->faker->randomElement(['Fully Restored', 'Partially Restored', 'Barn Find', 'Unrestored Original']),
-            'original_parts_percentage' => $this->faker->numberBetween(50, 100),
+            'original_parts_percentage' => $this->faker->numberBetween(10, 100),
             'license_plate_type' => $this->faker->randomElement(['Original Plate', 'Modern Plate', 'No Plate']),
             'documentation_status' => $this->faker->randomElement(['Original Papers', 'Missing Papers', 'Custom Registration']),
             'created_at' => now(),

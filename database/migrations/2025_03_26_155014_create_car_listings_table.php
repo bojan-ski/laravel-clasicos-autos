@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('name');
             $table->text('description');
-            $table->string('make');
             $table->string('model');
+            $table->string('car_maker');
             $table->year('year');
             $table->integer('mileage');
             $table->string('exterior_color')->nullable();
@@ -32,9 +32,10 @@ return new class extends Migration
             $table->string('seat_material')->nullable();
             $table->text('engine_history')->nullable();
             $table->enum('engine_condition', ['Running', 'Needs Tuning', 'Not Running', 'Rebuilt Engine', 'Original Factory Engine'])->default('Running');
-            $table->decimal('price', 10, 2);
+            $table->integer('price');
             $table->string('location_city')->nullable();
             $table->string('location_state')->nullable();
+            $table->integer('location_zipcode')->nullable();
             $table->json('images')->nullable();
             $table->string('body_type')->nullable();
             $table->enum('restoration_history', ['Fully Restored', 'Partially Restored', 'Barn Find', 'Unrestored Original'])->default('Unrestored Original');

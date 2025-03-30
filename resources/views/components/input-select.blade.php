@@ -16,17 +16,16 @@
     </legend>
     @endif
 
-    {{-- <select id="{{ $id }}" name="{{ $name }}" class="select" required="{{ $required }}" > --}}
-    <select id="{{ $id }}" name="{{ $name }}" class="select w-full" >
+    <select id="{{ $id }}" name="{{ $name }}" class="select w-full" @if ($required) required @endif >
         @if ($disabledOptionLabel)
         <option value="">
             {{ $disabledOptionLabel }}
         </option>
         @endif
 
-        @foreach ($options as $optionValue => $optionLabel)
-        <option value="{{ $optionValue }}" {{ old($name, $value) == $optionValue ? 'selected' : '' }}>
-            {{ $optionLabel }}
+        @foreach ($options as $option)
+        <option value="{{ $option }}" {{ old($name, $value) == $option ? 'selected' : '' }}>
+            {{ $option }}
         </option>
         @endforeach
     </select>
