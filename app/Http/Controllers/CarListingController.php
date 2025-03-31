@@ -76,7 +76,6 @@ class CarListingController extends Controller
             $query->where('model', 'like', '%' . $request->model . '%');
         }
 
-
         // mileage
         if ($request->filled('mileage')) {
             $query->where('mileage', '<=', $request->mileage);

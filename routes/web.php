@@ -16,6 +16,11 @@ Route::get('/listings/advance_search', [CarListingController::class, 'showAdvanc
 Route::get('/listings/filter', [CarListingController::class, 'filter'])->name('listings.filter');
 Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 
+Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare.show');
+Route::get('/compare/clear', [CompareController::class, 'clearCompare'])->name('compare.clear');
+Route::post('/compare/add/{listing}', [CompareController::class, 'addToCompare'])->name('compare.add');
+Route::post('/compare/remove/{listing}', [CompareController::class, 'removeFromCompare'])->name('compare.remove');
+
 Route::middleware('guest')->group(function(){
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'store'])->name('register.store');
@@ -30,6 +35,6 @@ Route::middleware('guest')->group(function(){
 Route::middleware('auth')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::post('/listings/bookmark/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
-    Route::delete('/listings/bookmark/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+    Route::post('/bookmark/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+    Route::delete('/bookmark/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
 });

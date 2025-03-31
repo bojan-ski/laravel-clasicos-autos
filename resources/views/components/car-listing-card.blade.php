@@ -22,10 +22,11 @@
         </form>
 
         {{-- compare feature --}}
-        <form method="POST" action="{{ route('listings.bookmark', $listing->id) }}">
+        <form method="POST"
+            action="{{ !in_array($listing->id, session('compare_listings', [])) ? route('compare.add', $listing->id) : route('compare.remove', $listing->id) }}">
             @csrf
-            @if (auth()->user()->userBookmarks()->where('car_listing_id', $listing->id)->exists())
-            @method("DELETE")
+
+            @if (in_array($listing->id, session('compare_listings', [])))
             <button type="submit" class="btn bg-red-500 text-white hover:bg-transparent hover:text-red-500">
                 <i class="fa-solid fa-code-compare"></i>
             </button>
