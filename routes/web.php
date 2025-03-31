@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarListingController;
+use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\CompareController;
 
 Route::get('/', function () {
     return view('home.index');
 })->name('home.index');
-
 
 Route::get('/listings', [CarListingController::class, 'index'])->name('listings');
 Route::get('/listings/search', [CarListingController::class, 'search'])->name('listings.search');
@@ -29,5 +30,6 @@ Route::middleware('guest')->group(function(){
 Route::middleware('auth')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::post('/listings/bookmark/{id}', [CarListingController::class, 'bookmark'])->name('listings.bookmark');
+    Route::post('/listings/bookmark/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+    Route::delete('/listings/bookmark/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
 });

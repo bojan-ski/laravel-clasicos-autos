@@ -191,19 +191,6 @@ class CarListingController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function bookmark(CarListing $listing): RedirectResponse
-    {
-        $user = Auth::user();
-
-        dd($listing);
-        dd($user);
-        
-        return back()->with('success', 'Bookmark added');
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)

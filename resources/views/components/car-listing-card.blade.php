@@ -1,26 +1,41 @@
 @props(['listing'])
 
-
 <div class="bg-white shadow-lg border-1 border-yellow-500 rounded-xl overflow-hidden hover:shadow-2xl">
     <div class="mb-4">
         <img src="{{ json_decode($listing->images)[0] }}" alt="{{ $listing->name }}" />
     </div>
 
     <div class="flex items-center justify-between px-4">
+        {{-- bookmark feature --}}
         <form method="POST" action="{{ route('listings.bookmark', $listing->id) }}">
             @csrf
-            <button type="submit" class="btn">
+            @if (auth()->user()->userBookmarks()->where('car_listing_id', $listing->id)->exists())
+            @method("DELETE")
+            <button type="submit" class="btn bg-red-500 text-white hover:bg-transparent hover:text-red-500">
                 <i class="fa-regular fa-bookmark"></i>
             </button>
+            @else
+            <button type="submit" class="btn text-red-500 hover:bg-red-500 hover:text-white">
+                <i class="fa-regular fa-bookmark"></i>
+            </button>
+            @endif
+        </form>
+
+        {{-- compare feature --}}
+        <form method="POST" action="{{ route('listings.bookmark', $listing->id) }}">
+            @csrf
+            @if (auth()->user()->userBookmarks()->where('car_listing_id', $listing->id)->exists())
+            @method("DELETE")
+            <button type="submit" class="btn bg-red-500 text-white hover:bg-transparent hover:text-red-500">
+                <i class="fa-solid fa-code-compare"></i>
+            </button>
+            @else
+            <button type="submit" class="btn text-red-500 hover:bg-red-500 hover:text-white">
+                <i class="fa-solid fa-code-compare"></i>
+            </button>
+            @endif
         </form>
     </div>
-
-    {{-- <div class="flex items-center justify-between">
-        <i class="fa-solid fa-code-compare"></i>
-        <i class="fa-solid fa-bookmark"></i>
-        <i class="fa-regular fa-bookmark"></i>
-        <i class="fa-solid fa-code-compare text-red-500"></i>
-    </div> --}}
 
     <div class="p-4">
         <h3 class="text-xl font-bold text-red-600 mb-3">
@@ -40,7 +55,8 @@
         </div>
 
         <div class="flex items-center justify-between">
-            <a href="{{ route('listings.show', $listing->id) }}" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 font-semibold">
+            <a href="{{ route('listings.show', $listing->id) }}"
+                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 font-semibold">
                 View Details
             </a>
             <span class="font-semibold">
