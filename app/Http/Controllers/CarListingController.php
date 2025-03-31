@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\CarListing;
 use App\Models\CarMaker;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class CarListingController extends Controller
 {
@@ -14,7 +16,7 @@ class CarListingController extends Controller
      */
     public function index(): View
     {
-        $listings = CarListing::latest()->paginate(12);        
+        $listings = CarListing::latest()->paginate(12);
 
         return view('carListing.index')->with('listings', $listings);
     }
@@ -66,7 +68,7 @@ class CarListingController extends Controller
         // RUN QUERY
         $query = CarListing::query();
 
-        // Collect all filter parameters
+        // collect all filter parameters
         $filterParams = $request->except(['page']);
 
         // model
@@ -86,6 +88,10 @@ class CarListingController extends Controller
                 $request->price_from,
                 $request->price_to
             ]);
+        } elseif ($request->filled('price_from')) {
+            $query->where('price', '>=', $request->price_from);
+        } elseif ($request->filled('price_to')) {
+            $query->where('price', '<=', $request->price_to);
         }
 
         // date 
@@ -94,6 +100,10 @@ class CarListingController extends Controller
                 $request->year_from,
                 $request->year_to
             ]);
+        } elseif ($request->filled('year_from')) {
+            $query->where('year', '>=', $request->year_from);
+        } elseif ($request->filled('year_to')) {
+            $query->where('year', '<=', $request->year_to);
         }
 
         // color
@@ -105,7 +115,7 @@ class CarListingController extends Controller
             $query->where('interior_color', 'like', '%' . $request->interior_color . '%');
         }
 
-        // Location Filters
+        // location filters
         if ($request->filled('city')) {
             $query->where('location_city', 'like', '%' . $request->city . '%');
         }
@@ -178,6 +188,19 @@ class CarListingController extends Controller
     public function show(CarListing $listing): View
     {
         return view('carListing.show')->with('listing', $listing);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function bookmark(CarListing $listing): RedirectResponse
+    {
+        $user = Auth::user();
+
+        dd($listing);
+        dd($user);
+        
+        return back()->with('success', 'Bookmark added');
     }
 
     /**

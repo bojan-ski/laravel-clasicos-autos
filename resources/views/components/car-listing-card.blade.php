@@ -2,18 +2,25 @@
 
 
 <div class="bg-white shadow-lg border-1 border-yellow-500 rounded-xl overflow-hidden hover:shadow-2xl">
-    <div>
+    <div class="mb-4">
         <img src="{{ json_decode($listing->images)[0] }}" alt="{{ $listing->name }}" />
     </div>
 
-    <div class="flex items-center justify-between">
-        <i class="fa-solid fa-bookmark"></i>
-        <i class="fa-solid fa-code-compare"></i>
+    <div class="flex items-center justify-between px-4">
+        <form method="POST" action="{{ route('listings.bookmark', $listing->id) }}">
+            @csrf
+            <button type="submit" class="btn">
+                <i class="fa-regular fa-bookmark"></i>
+            </button>
+        </form>
     </div>
-    <div class="flex items-center justify-between">
+
+    {{-- <div class="flex items-center justify-between">
+        <i class="fa-solid fa-code-compare"></i>
+        <i class="fa-solid fa-bookmark"></i>
         <i class="fa-regular fa-bookmark"></i>
         <i class="fa-solid fa-code-compare text-red-500"></i>
-    </div>
+    </div> --}}
 
     <div class="p-4">
         <h3 class="text-xl font-bold text-red-600 mb-3">
@@ -21,7 +28,7 @@
         </h3>
         <div class="mb-3">
             <p class=" font-semibold mb-1">
-                <i class="fa-solid fa-car mr-2"></i> {{ $listing->make }}, {{ $listing->model }},
+                <i class="fa-solid fa-car mr-2"></i> {{ $listing->car_maker }} - {{ $listing->model }} -
                 {{ $listing->fuel_type }}
             </p>
             <p class=" font-semibold mb-1">

@@ -20,14 +20,16 @@ class DatabaseSeeder extends Seeder
         // truncate tables - reset DB
         DB::table('users')->truncate();
         DB::table('car_listings')->truncate();
+        DB::table('user_bookmarks')->truncate();
 
         // re-enable foreign key checks - error will happen if not called
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // create tables
+        // create tables with dummy data
         $this->call(AdminUserSeeder::class);
         $this->call(TestUserSeeder::class);
         $this->call(DummyUserSeeder::class);
         $this->call(DummyCarListingSeeder::class);
+        $this->call(DummyBookmarkedCarListingSeeder::class);
     }
 }

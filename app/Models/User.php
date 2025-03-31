@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -46,5 +48,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // relation to the car_listings table
+    public function userCarListings(): HasMany
+    {
+        return $this->hasMany(CarListing::class);
+    }
+
+    // relation to the user_bookmarks table
+    public function userBookmarks(): BelongsToMany
+    {
+        return $this->belongsToMany(CarListing::class, 'user_bookmarks')->withTimestamps();
     }
 }
