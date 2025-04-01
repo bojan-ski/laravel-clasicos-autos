@@ -7,35 +7,10 @@
 
     <div class="flex items-center justify-between px-4">
         {{-- bookmark feature --}}
-        <form method="POST" action="{{ route('listings.bookmark', $listing->id) }}">
-            @csrf
-            @if (auth()->user() && auth()->user()->userBookmarks()->where('car_listing_id', $listing->id)->exists())
-            @method("DELETE")
-            <button type="submit" class="btn bg-red-500 text-white hover:bg-transparent hover:text-red-500">
-                <i class="fa-regular fa-bookmark"></i>
-            </button>
-            @else
-            <button type="submit" class="btn text-red-500 hover:bg-red-500 hover:text-white">
-                <i class="fa-regular fa-bookmark"></i>
-            </button>
-            @endif
-        </form>
+        <x-carListingCard.bookmark-option :listing="$listing"/>
 
         {{-- compare feature --}}
-        <form method="POST"
-            action="{{ !in_array($listing->id, session('compare_listings', [])) ? route('compare.add', $listing->id) : route('compare.remove', $listing->id) }}">
-            @csrf
-
-            @if (in_array($listing->id, session('compare_listings', [])))
-            <button type="submit" class="btn bg-red-500 text-white hover:bg-transparent hover:text-red-500">
-                <i class="fa-solid fa-code-compare"></i>
-            </button>
-            @else
-            <button type="submit" class="btn text-red-500 hover:bg-red-500 hover:text-white">
-                <i class="fa-solid fa-code-compare"></i>
-            </button>
-            @endif
-        </form>
+        <x-carListingCard.compare-option :listing="$listing"/>
     </div>
 
     <div class="p-4">
