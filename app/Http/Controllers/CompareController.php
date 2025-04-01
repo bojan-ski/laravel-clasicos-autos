@@ -12,12 +12,12 @@ class CompareController extends Controller
     /**
      * Add car listing to the compare_listings - session
      */ 
-    public function addToCompare(Request $request, $listingId): RedirectResponse
+    public function addToCompare(Request $request, CarListing $listing): RedirectResponse
     {
         $compareListings = $request->session()->get('compare_listings', []);
 
-        if (!in_array($listingId, $compareListings) && count($compareListings) < 2) {
-            $compareListings[] = $listingId;
+        if (!in_array($listing->id, $compareListings) && count($compareListings) < 2) {
+            $compareListings[] = $listing->id;
 
             $request->session()->put('compare_listings', $compareListings);
 
@@ -30,10 +30,10 @@ class CompareController extends Controller
     /**
      * Remove car listing to the compare_listings - session
      */
-    public function removeFromCompare(Request $request, $listingId): RedirectResponse
+    public function removeFromCompare(Request $request, CarListing $listing): RedirectResponse
     {
         $compareListings = $request->session()->get('compare_listings', []);
-        $index = array_search($listingId, $compareListings);
+        $index = array_search($listing->id, $compareListings);
 
         if ($index !== false) {
             unset($compareListings[$index]);
@@ -47,7 +47,7 @@ class CompareController extends Controller
     }
 
     /**
-     * Display selected car listings for compare 
+     * Display selected car listings for compare - compare page 
      */
     public function showCompare(Request $request): View
     {

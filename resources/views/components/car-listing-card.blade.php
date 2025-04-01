@@ -9,7 +9,7 @@
         {{-- bookmark feature --}}
         <form method="POST" action="{{ route('listings.bookmark', $listing->id) }}">
             @csrf
-            @if (auth()->user()->userBookmarks()->where('car_listing_id', $listing->id)->exists())
+            @if (auth()->user() && auth()->user()->userBookmarks()->where('car_listing_id', $listing->id)->exists())
             @method("DELETE")
             <button type="submit" class="btn bg-red-500 text-white hover:bg-transparent hover:text-red-500">
                 <i class="fa-regular fa-bookmark"></i>
@@ -50,7 +50,7 @@
             <p class=" font-semibold mb-1">
                 <i class="fa-solid fa-calendar-days mr-2"></i> {{ $listing->year }}
             </p>
-            <p class="text-yellow-700 text-xl font-bold text-end">
+            <p class="text-yellow-700 text-2xl font-bold text-end">
                 ${{ number_format($listing->price) }}
             </p>
         </div>

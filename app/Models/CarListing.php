@@ -35,6 +35,7 @@ class CarListing extends Model
         'price',
         'location_city',
         'location_state',
+        'zipcode',
         'images',
         'body_type',
         'restoration_history',
