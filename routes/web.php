@@ -3,17 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarListingController;
-use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CompareController;
+use App\Http\Controllers\BookmarkController;
 
 Route::get('/', function () {
     return view('home.index');
 })->name('home.index');
 
 Route::get('/listings', [CarListingController::class, 'index'])->name('listings');
-Route::get('/listings/search', [CarListingController::class, 'search'])->name('listings.search');
-Route::get('/listings/advance_search', [CarListingController::class, 'showAdvanceSearch'])->name('listings.showAdvanceSearch');
-Route::get('/listings/filter', [CarListingController::class, 'filter'])->name('listings.filter');
+Route::get('/listings/search', [SearchController::class, 'search'])->name('listings.search');
+Route::get('/listings/advance_search', [SearchController::class, 'showAdvanceSearch'])->name('listings.showAdvanceSearch');
+Route::get('/listings/filter', [SearchController::class, 'filter'])->name('listings.filter');
 Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 
 Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare.show');
