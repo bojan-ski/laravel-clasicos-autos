@@ -2,16 +2,10 @@
     <div class="compare-car-listings-page container mx-auto mt-10">
 
         <div class="flex items-center justify-between mb-5">
-            <a href="{{ url()->previous() }}"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold">
-                <span class="hidden md:block">
-                    Back
-                </span>
-                <span class="md:hidden">
-                    <i class="fa-solid fa-arrow-left"></i>
-                </span>
-            </a>
+            {{-- back to prev page button --}}
+            <x-back-button />
 
+            {{-- clear compare page/session --}}
             @if ($selectedCarListings->isNotEmpty())
             <a href="{{ route('compare.clear') }}"
                 class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 font-semibold">

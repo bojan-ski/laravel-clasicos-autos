@@ -4,10 +4,11 @@
 ])
 
 @if (session()->has($type))
-<div class="pop-up-message w-72 fixed top-1/5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-    <div
-        class="text-center font-semibold p-4 mb-4 text-white rounded {{ $type == 'success' ? 'bg-green-500' : 'bg-red-500' }}">
-        {{ $message }}
+<div class="pop-up-message fixed inset-0 z-100 bg-black/25 bg-opacity-15 pt-[150px]">
+    <div class="max-w-max mx-auto p-6 md:px-8 rounded-lg {{ $type == 'success' ? 'bg-green-500' : 'bg-red-500' }}">
+        <p class="text-2xl text-white font-semibold">
+            {{ $message }}
+        </p>
     </div>
 </div>
 @endif

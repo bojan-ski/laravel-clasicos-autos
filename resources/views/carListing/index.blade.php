@@ -5,7 +5,8 @@
             <x-search-option />            
         </section>
 
-        <section class="car-listings {{ $listings->count() > 0 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7' : '' }} p-4">
+        {{-- car listings container --}}
+        <section class="car-listings {{ $listings->isNotEmpty() ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7' : '' }} p-4">
             @forelse ($listings as $listing)
                 <x-car-listing-card :listing="$listing" />
             @empty

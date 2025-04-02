@@ -38,7 +38,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="btn text-md mx-2 hover:bg-yellow-500">
+                        <a href="{{ route('profile.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('profile') ? 'bg-yellow-500' : '' }}">
                             Profile
                         </a>
                     </li>
@@ -60,7 +60,7 @@
             <a href="{{ route('bookmarks.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('bookmarks') ? 'bg-yellow-500' : '' }}">
                 Bookmarked
             </a>
-            <a class="btn text-md mx-2 hover:bg-yellow-500">
+            <a href="{{ route('profile.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('profile') ? 'bg-yellow-500' : '' }}">
                 Profile
             </a>
             @endauth

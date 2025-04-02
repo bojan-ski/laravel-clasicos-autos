@@ -6,6 +6,8 @@ use App\Http\Controllers\CarListingController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\LegalController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('home.index');
@@ -21,6 +23,9 @@ Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare
 Route::get('/compare/clear', [CompareController::class, 'clearCompare'])->name('compare.clear');
 Route::post('/compare/add/{listing}', [CompareController::class, 'addToCompare'])->name('compare.add');
 Route::post('/compare/remove/{listing}', [CompareController::class, 'removeFromCompare'])->name('compare.remove');
+
+Route::get('/privacy_policy', [LegalController::class, 'privacyPolicy'])->name('privacy_policy');
+Route::get('/terms_and_conditions', [LegalController::class, 'termsAndConditions'])->name('terms_and_conditions');
 
 Route::middleware('guest')->group(function(){
     Route::get('/register', [AuthController::class, 'register'])->name('register');
@@ -39,4 +44,7 @@ Route::middleware('auth')->group(function(){
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
     Route::post('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
     Route::delete('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
