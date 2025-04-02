@@ -11,10 +11,10 @@ class CompareController extends Controller
 {
     /**
      * Add car listing to the compare_listings - session
-     */ 
+     */
     public function addToCompare(Request $request, CarListing $listing): RedirectResponse
     {
-        $compareListings = $request->session()->get('compare_listings');
+        $compareListings = $request->session()->get('compare_listings', []);
 
         if (!in_array($listing->id, $compareListings) && count($compareListings) < 2) {
             $compareListings[] = $listing->id;
@@ -32,7 +32,7 @@ class CompareController extends Controller
      */
     public function removeFromCompare(Request $request, CarListing $listing): RedirectResponse
     {
-        $compareListings = $request->session()->get('compare_listings');
+        $compareListings = $request->session()->get('compare_listings', []);
         $index = array_search($listing->id, $compareListings);
 
         if ($index !== false) {
@@ -51,7 +51,7 @@ class CompareController extends Controller
      */
     public function showCompare(Request $request): View
     {
-        $selectedCarListingsIds = $request->session()->get('compare_listings');
+        $selectedCarListingsIds = $request->session()->get('compare_listings', []);
         $selectedCarListings = CarListing::whereIn('id', $selectedCarListingsIds)->get();
 
         return view('carListing.compare')->with('selectedCarListings', $selectedCarListings);

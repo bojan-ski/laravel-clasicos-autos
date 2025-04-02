@@ -7,22 +7,22 @@
         <x-advance-search-option :makers="$carMakers"/>
 
         {{-- if result --}}
-        @if (isset($advanceSearchResult) && $advanceSearchResult->count() > 0)
-        <div class="container mx-auto">
+        @if (isset($advanceSearchResult) && $advanceSearchResult->isNotEmpty())
+        <div class="container mb-10 mx-auto">
             {{-- car listings container --}}
             <section
-                class="car-listings {{ $advanceSearchResult->count() > 0 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7' : '' }}">
+                class="car-listings mb-10 {{ $advanceSearchResult->isNotEmpty() ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7' : '' }}">
                 @foreach ($advanceSearchResult as $listing)
                 <x-car-listing-card :listing="$listing" />
                 @endforeach
             </section>
 
             {{-- pagination --}}
-            <section class="pagination-option mt-2 mb-10">
+            <section class="pagination-option">
                 {{ $advanceSearchResult->links() }}
             </section>
         </div>
         @endif
 
-    </div>
+    </div>     
 </x-layout>

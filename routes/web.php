@@ -36,6 +36,7 @@ Route::middleware('guest')->group(function(){
 Route::middleware('auth')->group(function(){
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::post('/bookmark/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
-    Route::delete('/bookmark/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+    Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+    Route::post('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+    Route::delete('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
 });

@@ -1,6 +1,6 @@
 <x-layout>
-
     <div class="compare-car-listings-page container mx-auto mt-10">
+
         <div class="flex items-center justify-between mb-5">
             <a href="{{ url()->previous() }}"
                 class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold">
@@ -80,8 +80,8 @@
             @endforeach
         </div>
         @else
-        <x-no-data-message label="No car listings were selected for comparison" />
+        <x-no-data-message message="No car listings were selected for comparison" />
         @endif
+        
     </div>
-
 </x-layout>

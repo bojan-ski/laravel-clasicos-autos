@@ -144,7 +144,7 @@ class SearchController extends Controller
         $query->orderBy('created_at', 'desc');
 
         // results
-        $advanceSearchResult = $query->paginate(6)->appends($filterParams);
+        $advanceSearchResult = $query->paginate(8)->appends($filterParams);
 
         // display view
         return view('carListing.advance_search')->with([

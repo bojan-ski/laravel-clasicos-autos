@@ -1,7 +1,7 @@
 @props([
-    'label'
+    'message'
 ])
 
 <h2 class="text-5xl font-bold mb-5 text-center">
-    {{ $label }}
+    {{ $message }}
 </h2>
