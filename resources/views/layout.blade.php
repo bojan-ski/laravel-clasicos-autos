@@ -10,7 +10,7 @@
     @vite('resources/css/app.css')
 
     {{-- custom css --}}
-    <link rel="stylesheet" href="{{asset('/css/style.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     {{-- font-awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -27,6 +27,16 @@
     {{-- header --}}
     <x-appLayout.header />
 
+    {{-- pop-up messages success --}}
+    @if (session('success'))
+    <x-pop-up-message type='success' message="{{ session('success') }}" />
+    @endif
+
+    {{-- pop-up messages error --}}
+    @if (session('error'))
+    <x-pop-up-message type='error' message="{{ session('error') }}" />
+    @endif
+
     {{-- compare option - button --}}
     @if (session('compare_listings'))
     <x-compare-button />
@@ -39,6 +49,9 @@
 
     {{-- footer --}}
     <x-appLayout.footer />
+
+    {{-- custom js --}}
+    <script src="{{asset('/js/closePopUpMsg.js')}}"></script>
 </body>
 
 </html>

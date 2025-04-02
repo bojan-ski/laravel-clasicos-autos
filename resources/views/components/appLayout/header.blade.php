@@ -69,7 +69,7 @@
                 Register
             </a>
             {{-- login --}}
-            <a href="{{ route('login') }}" class="btn text-md mx-2  text-white hover:bg-yellow-500 {{ request()->is('login') ? 'bg-yellow-500' : 'bg-yellow-600' }}">
+            <a href="{{ route('login') }}" class="btn text-md mx-2 text-white hover:bg-yellow-500 {{ request()->is('login') ? 'bg-yellow-500' : 'bg-yellow-600' }}">
                 Login
             </a>
             @endauth
