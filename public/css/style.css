@@ -1,7 +1,11 @@
+/* GOOGLE FONT */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: "Montserrat", sans-serif;
 }
 
 main {

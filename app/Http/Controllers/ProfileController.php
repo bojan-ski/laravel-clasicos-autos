@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 use App\Models\CarListing;
-use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -45,7 +45,7 @@ class ProfileController extends Controller
             ]);
         };
 
-        // if all is good - updated safe word
+        // if all is good - change safe word
         $user->safe_word = $formData['new_safe_word'];
         $user->save();
 
@@ -54,10 +54,32 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update user password word
+     * Update user password
      */
-    public function updatePassword(Request $request): RedirectResponse {
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        // check user provided data
+        $formData = $request->validate([
+            'old_password' => 'required|string',
+            'password' => 'required|string|min:6|different:old_password|confirmed'
+        ]);
 
+        // get user data
+        $user = Auth::user();
+
+        // check if provided password is related to the user
+        if (!Hash::check($formData['old_password'], $user->password)) {
+            return redirect()->back()->withErrors([
+                'old_password' => 'Invalid password'
+            ]);
+        };
+
+        // if all is good - change password
+        $user->password = Hash::make($formData['password']);
+        $user->save();
+
+        // redirect user
+        return redirect()->route('profile.index')->with('success', 'Password updated');
     }
 
     /**
@@ -69,7 +91,6 @@ class ProfileController extends Controller
 
         // verify user/password
         if (!password_verify($request->password, $user->password)) {
-            // if wrong password redirect user with error msg
             return redirect()->back()->with('error', 'Password is incorrect, account deletion failed.');
         }
 

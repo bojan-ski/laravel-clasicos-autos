@@ -1,6 +1,7 @@
 @props(['user'])
 
 <section class="user-profile-data grid grid-cols-2 md:gap-4 px-4 mb-5">
+    {{-- user profile data --}}
     <div class="bg-white shadow-md border-1 border-yellow-500 rounded-md p-3">
         <p class="mb-3">
             <span class="block md:inline-block">
@@ -18,7 +19,7 @@
                 {{ $user->email }}
             </span>
         </p>
-        <p>
+        <p class="mb-3">
             <span class="block md:inline-block">
                 Account created:
             </span>
@@ -26,18 +27,18 @@
                 {{ \Carbon\Carbon::parse($user->created_at)->format('d.m.Y') }}
             </span>
         </p>
-    </div>
-
-    <div class="text-end">
-        {{-- delete account --}}
-        <x-profilePage.delete-account-option />
 
         {{-- legal links --}}
-        <a href="{{ route('termsAndConditions') }}" class="block text-blue-500 hover:text-blue-600 font-bold mb-2">
+        <a href="{{ route('termsAndConditions') }}" class="text-blue-500 hover:text-blue-600 font-bold mr-3">
             Terms & Conditions
         </a>
-        <a href="{{ route('privacyPolicy') }}" class="block text-blue-500 hover:text-blue-600 font-bold">
+        <a href="{{ route('privacyPolicy') }}" class="text-blue-500 hover:text-blue-600 font-bold">
             Privacy Policy
         </a>
+    </div>
+
+    {{-- delete account --}}
+    <div class="text-end">
+        <x-profilePage.delete-account-option />        
     </div>
 </section>

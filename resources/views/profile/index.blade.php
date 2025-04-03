@@ -27,5 +27,6 @@
                 {{ $userCarListings->links() }}
             </div>
         </section>
+
     </div>
 </x-layout>
