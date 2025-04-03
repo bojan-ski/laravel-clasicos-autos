@@ -53,7 +53,7 @@ class AuthController extends Controller
         if (Auth::attempt($userCredentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route('home.index')->with('success', 'You have logged in');
+            return redirect()->route('profile.index')->with('success', 'You have logged in');
         }
 
         // if bad credentials - redirect user

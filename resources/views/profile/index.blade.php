@@ -19,31 +19,20 @@
                 </p>
             </div>
 
-            <div class="text-end">    
-                <button class="btn text-md bg-red-900 text-white hover:bg-red-700 mb-2">
-                    Delete Account
-                </button>
+            <div class="text-end">
+                {{-- delete account --}}
+                <x-profilePage.delete-account-option />
 
-                <a href="{{ route('terms_and_conditions') }}" class="block text-blue-500 hover:text-blue-600 font-bold mb-2">
+                {{-- legal links --}}
+                <a href="{{ route('terms_and_conditions') }}"
+                    class="block text-blue-500 hover:text-blue-600 font-bold mb-2">
                     Terms & Conditions
                 </a>
                 <a href="{{ route('privacy_policy') }}" class="block text-blue-500 hover:text-blue-600 font-bold">
                     Privacy Policy
-                </a>                               
+                </a>
             </div>
         </section>
-
-        <!-- You can open the modal using ID.showModal() method -->
-<button class="btn" onclick="my_modal_3.showModal()">open modal</button>
-<dialog id="my_modal_3" class="modal">
-  <div class="modal-box">
-    <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-    <h3 class="text-lg font-bold">Hello!</h3>
-    <p class="py-4">Press ESC key or click on ✕ button to close</p>
-  </div>
-</dialog>
 
         {{-- user car listings --}}
         <section class="user-car-listings mb-10">
