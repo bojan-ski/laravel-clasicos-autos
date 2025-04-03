@@ -11,7 +11,7 @@
 
         <form method="POST" action="{{ route('profile.destroy') }}">
             @csrf
-            @method('DELETE')
+            @method("DELETE")
 
             {{-- confirm delete - password --}}
             <x-input-text id='password' name='password' type="password" placeholder='Enter your password to confirm account delete' :require="true" />

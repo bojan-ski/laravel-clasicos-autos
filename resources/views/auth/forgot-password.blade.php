@@ -5,7 +5,7 @@
 
             <x-page-header label='Forgot password' updatedClass='text-center'/>
 
-            <form method="POST" action="{{route('forgot-password.update')}}" class="lg:w-1/2 mx-auto mb-5">
+            <form method="POST" action="{{route('forgotPassword.resetPassword')}}" class="lg:w-1/2 mx-auto mb-5">
                 @csrf
                 @method('PUT')
 

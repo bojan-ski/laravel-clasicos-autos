@@ -24,8 +24,8 @@ Route::get('/compare/clear', [CompareController::class, 'clearCompare'])->name('
 Route::post('/compare/add/{listing}', [CompareController::class, 'addToCompare'])->name('compare.add');
 Route::post('/compare/remove/{listing}', [CompareController::class, 'removeFromCompare'])->name('compare.remove');
 
-Route::get('/privacy_policy', [LegalController::class, 'privacyPolicy'])->name('privacy_policy');
-Route::get('/terms_and_conditions', [LegalController::class, 'termsAndConditions'])->name('terms_and_conditions');
+Route::get('/privacy_policy', [LegalController::class, 'privacyPolicy'])->name('privacyPolicy');
+Route::get('/terms_and_conditions', [LegalController::class, 'termsAndConditions'])->name('termsAndConditions');
 
 Route::middleware('guest')->group(function(){
     Route::get('/register', [AuthController::class, 'register'])->name('register');
@@ -34,8 +34,8 @@ Route::middleware('guest')->group(function(){
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/login', [AuthController::class, 'authenticate'])->name('login.authenticate');
 
-    Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot-password');
-    Route::put('/forgot-password', [AuthController::class, 'resetPassword'])->name('forgot-password.update');
+    Route::get('/forgot_password', [AuthController::class, 'forgotPassword'])->name('forgotPassword');
+    Route::put('/forgot_password', [AuthController::class, 'resetPassword'])->name('forgotPassword.resetPassword');
 });
 
 Route::middleware('auth')->group(function(){
@@ -46,5 +46,7 @@ Route::middleware('auth')->group(function(){
     Route::delete('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile/update_safe_word', [ProfileController::class, 'updateSafeWord'])->name('profile.updateSafeWord');
+    Route::put('/profile/update_password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

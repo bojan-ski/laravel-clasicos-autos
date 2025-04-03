@@ -27,7 +27,7 @@
                     </p>
                     
                     <p>
-                        Can't remember your password? <a class="text-blue-500 hover:text-blue-600 font-bold" href="{{ route('forgot-password') }}">Reset password</a>
+                        Can't remember your password? <a class="text-blue-500 hover:text-blue-600 font-bold" href="{{ route('forgotPassword') }}">Reset password</a>
                     </p>
                 </div>
             </div>
