@@ -18,7 +18,7 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        $userCarListings = CarListing::where('user_id', $user->id)->paginate(8);
+        $userCarListings = CarListing::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(8);
 
         return view('profile.index')->with('user', $user)->with('userCarListings', $userCarListings);
     }

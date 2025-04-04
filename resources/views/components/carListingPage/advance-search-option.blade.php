@@ -7,7 +7,7 @@
         <x-input-text id='model' name='model' label='Model' value="{{ request('model') }}"
             placeholder='Enter the car model' />
 
-        {{-- make --}}
+        {{-- car maker --}}
         <x-input-select id='car_maker' name='car_maker' label='Car Maker' value="{{ request('car_maker') }}"
             disabledOptionLabel='Select car maker'
             :options="$makers" />

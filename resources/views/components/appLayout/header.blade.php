@@ -69,8 +69,16 @@
         {{-- auth - list car listing --}}
         <div class="navbar-end">
             @auth
-            <a class="btn text-md mx-2 bg-blue-600 text-white hover:bg-blue-500">
-                List Car
+            <a href="{{ route('listings.create') }}" class="btn text-md mx-2 bg-blue-600 text-white hover:bg-blue-500">
+                <span>
+                    <i class="fa-solid fa-circle-plus"></i>
+                </span>
+                <span class="md:hidden">
+                    <i class="fa-solid fa-car"></i>
+                </span>
+                <span class="hidden md:block">
+                    List Car
+                </span>
             </a>
             {{-- logout button --}}
             <x-logout-button />

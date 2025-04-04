@@ -11,3 +11,7 @@ body {
 main {
     flex: 1;
 }
+
+textarea{
+    resize: none;
+}

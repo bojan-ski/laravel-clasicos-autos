@@ -14,18 +14,18 @@
     </div>
 
     <div class="p-4">
-        <h3 class="text-xl font-bold text-red-600 mb-3">
-            {{ $listing->name }}
+        <h3 class="text-lg font-bold text-red-600 mb-3">
+            {{ Str::limit($listing->name, 20) }}
         </h3>
         <div class="mb-3">
-            <p class=" font-semibold mb-1">
+            <p class="font-semibold mb-1">
                 <i class="fa-solid fa-car mr-2"></i> {{ $listing->car_maker }} - {{ $listing->model }} -
                 {{ $listing->fuel_type }}
             </p>
             <p class=" font-semibold mb-1">
                 <i class="fa-solid fa-calendar-days mr-2"></i> {{ $listing->year }}
             </p>
-            <p class="text-yellow-700 text-2xl font-bold text-end">
+            <p class="text-yellow-700 text-xl font-bold text-end">
                 ${{ number_format($listing->price) }}
             </p>
         </div>

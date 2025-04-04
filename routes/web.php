@@ -17,6 +17,8 @@ Route::get('/listings', [CarListingController::class, 'index'])->name('listings'
 Route::get('/listings/search', [SearchController::class, 'search'])->name('listings.search');
 Route::get('/listings/advance_search', [SearchController::class, 'showAdvanceSearch'])->name('listings.showAdvanceSearch');
 Route::get('/listings/filter', [SearchController::class, 'filter'])->name('listings.filter');
+Route::get('/listings/create', [CarListingController::class, 'create'])->name('listings.create')->middleware('auth');
+Route::post('/listings/store', [CarListingController::class, 'store'])->name('listings.store')->middleware('auth');
 Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 
 Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare.show');
