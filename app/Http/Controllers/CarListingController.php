@@ -207,8 +207,21 @@ class CarListingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(CarListing $listing): RedirectResponse
     {
-        //
+        // delete images 
+        $listingImagesDir = 'cars/' . $listing->id;
+        if (isset($listingImagesDir)) Storage::disk('public')->deleteDirectory($listingImagesDir);
+
+        // delete from database
+        try {
+            $listing->delete();
+
+            // redirect user
+            return redirect()->route('profile.index')->with('success', 'Car listing deleted.');
+        } catch (\Exception $e) {
+            // error msg
+            return redirect()->route('profile.index')->with('error', 'There was an error!');
+        }
     }
 }

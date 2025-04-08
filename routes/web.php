@@ -20,6 +20,7 @@ Route::get('/listings/filter', [SearchController::class, 'filter'])->name('listi
 Route::get('/listings/create', [CarListingController::class, 'create'])->name('listings.create')->middleware('auth');
 Route::post('/listings/store', [CarListingController::class, 'store'])->name('listings.store')->middleware('auth');
 Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
+Route::delete('/listings/destroy/{listing}', [CarListingController::class, 'destroy'])->name('listings.destroy');
 
 Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare.show');
 Route::get('/compare/clear', [CompareController::class, 'clearCompare'])->name('compare.clear');
