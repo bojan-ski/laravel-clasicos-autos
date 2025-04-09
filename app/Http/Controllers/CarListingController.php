@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\CarListing;
 use App\Models\CarMaker;
 use Intervention\Image\ImageManager;
@@ -16,6 +17,8 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class CarListingController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -42,7 +45,7 @@ class CarListingController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // Run php artisan storage:link to create a symbolic link from public/storage to storage/app/public
-        
+
         // validate new car listing form data
         $formData = $request->validate([
             'name' => 'required|string|max:255',
@@ -191,8 +194,13 @@ class CarListingController extends Controller
      */
     public function edit(CarListing $listing): View
     {
+        // check if user is owner of the car listing
+        $this->authorize('update', $listing);
+
+        // get car makes list form db
         $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
 
+        // display/return view
         return view('carListing.edit')->with('listing', $listing)->with('carMakers', $carMakers);
     }
 
@@ -201,6 +209,9 @@ class CarListingController extends Controller
      */
     public function update(Request $request, CarListing $listing)
     {
+        // check if user is owner of the car listing
+        $this->authorize('update', $listing);
+
         // validate new car listing form data
         $formData = $request->validate([
             'name' => 'required|string|max:255',
@@ -249,6 +260,9 @@ class CarListingController extends Controller
      */
     public function destroy(CarListing $listing): RedirectResponse
     {
+        // check if user is owner of the car listing
+        $this->authorize('update', $listing);
+
         // delete images 
         $listingImagesDir = 'cars/' . $listing->id;
         if (isset($listingImagesDir)) Storage::disk('public')->deleteDirectory($listingImagesDir);
