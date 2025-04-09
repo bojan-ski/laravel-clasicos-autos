@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\CarListing;
 use App\Models\CarMaker;
+use App\Models\User;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -186,7 +187,11 @@ class CarListingController extends Controller
      */
     public function show(CarListing $listing): View
     {
-        return view('carListing.show')->with('listing', $listing);
+        // get car listing owner
+        $carListingOwner = $listing->user;
+
+        // display/return view
+        return view('carListing.show')->with('listing', $listing)->with('carListingOwner', $carListingOwner);
     }
 
     /**

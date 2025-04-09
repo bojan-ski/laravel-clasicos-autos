@@ -2,7 +2,12 @@
 
 <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 font-semibold cursor-pointer"
     onclick="delete_car_listing_modal.showModal()">
-    <i class="fa-solid fa-trash-can"></i>
+    <span class="hidden md:block">
+        Delete
+    </span>
+    <span class="md:hidden">
+        <i class="fa-solid fa-trash-can"></i>
+    </span>     
 </button>
 
 <dialog id="delete_car_listing_modal" class="modal">
