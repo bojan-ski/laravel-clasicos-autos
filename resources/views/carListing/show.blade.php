@@ -7,7 +7,7 @@
 
             {{-- edit/delete option --}}
             <div class="flex items-center justify-between">
-                <a href="/" class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 font-semibold cursor-pointer mr-5">
+                <a href="{{ route('listings.edit', $listing) }}" class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 font-semibold cursor-pointer mr-5">
                     <i class="fa-regular fa-pen-to-square"></i>
                 </a>
 

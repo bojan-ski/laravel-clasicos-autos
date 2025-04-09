@@ -8,9 +8,9 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use App\Models\CarListing;
 use App\Models\CarMaker;
-use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -42,45 +42,45 @@ class CarListingController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // Run php artisan storage:link to create a symbolic link from public/storage to storage/app/public
+        
+        // validate new car listing form data
+        $formData = $request->validate([
+            'name' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'car_maker' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'year' => 'required|integer|min:1900|max:' . now()->year,
+            'mileage' => 'required|integer|min:0',
+            'transmission' => 'required|string|in:Manual,Automatic',
+            'fuel_type' => 'required|string|in:Gasoline,Diesel',
+            'engine_size' => 'nullable|string|max:50',
+            'engine_type' => 'nullable|string|max:100',
+            'engine_history' => 'required|string|in:Original Engine,Replaced Engine,Rebuilt Engine',
+            'engine_condition' => 'required|string|in:Running,Needs Tuning,Not Running,Rebuilt Engine,Original Factory Engine',
+            'restoration_history' => 'required|string|in:Fully Restored,Partially Restored,Barn Find,Unrestored Original',
+            'original_parts_percentage' => 'nullable|numeric|min:0|max:100',
+            'body_type' => 'nullable|string|in:Coupe,Sedan,Convertible,Wagon',
+            'seat_material' => 'nullable|string|in:Leather,Cloth,Vinyl,Velour',
+            'odometer' => 'required|string|in:Original,Rebuilt,Unknown',
+            'license_plate_type' => 'nullable|string|in:Original Plate,Modern Plate,No Plate',
+            'documentation_status' => 'required|string|in:Original Papers,Missing Papers,Custom Registration',
+            'exterior_color' => 'nullable|string|max:50',
+            'exterior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
+            'interior_color' => 'nullable|string|max:50',
+            'interior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
+            'location_city' => 'required|string|max:100',
+            'location_state' => 'required|string|max:100',
+            'location_zipcode' => 'required|string|max:20',
+            'description' => 'required|string|max:5000',
+            'images' => 'required|array|min:1|max:8',
+            'images.*' => 'required|image|mimes:jpeg,jpg,png|max:10240',
+        ]);
+
+        // get user ID
+        $userId = Auth::user();
+        $formData['user_id'] = $userId->id;
 
         try {
-            // validate new car listing form data
-            $formData = $request->validate([
-                'name' => 'required|string|max:255',
-                'model' => 'required|string|max:255',
-                'car_maker' => 'required|string|max:255',
-                'price' => 'required|numeric|min:0',
-                'year' => 'required|integer|min:1900|max:' . now()->year,
-                'mileage' => 'required|integer|min:0',
-                'transmission' => 'required|string|in:Manual,Automatic',
-                'fuel_type' => 'required|string|in:Gasoline,Diesel',
-                'engine_size' => 'nullable|string|max:50',
-                'engine_type' => 'nullable|string|max:100',
-                'engine_history' => 'required|string|in:Original Engine,Replaced Engine,Rebuilt Engine',
-                'engine_condition' => 'required|string|in:Running,Needs Tuning,Not Running,Rebuilt Engine,Original Factory Engine',
-                'restoration_history' => 'required|string|in:Fully Restored,Partially Restored,Barn Find,Unrestored Original',
-                'original_parts_percentage' => 'nullable|numeric|min:0|max:100',
-                'body_type' => 'nullable|string|in:Coupe,Sedan,Convertible,Wagon',
-                'seat_material' => 'nullable|string|in:Leather,Cloth,Vinyl,Velour',
-                'odometer' => 'required|string|in:Original,Rebuilt,Unknown',
-                'license_plate_type' => 'nullable|string|in:Original Plate,Modern Plate,No Plate',
-                'documentation_status' => 'required|string|in:Original Papers,Missing Papers,Custom Registration',
-                'exterior_color' => 'nullable|string|max:50',
-                'exterior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
-                'interior_color' => 'nullable|string|max:50',
-                'interior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
-                'location_city' => 'required|string|max:100',
-                'location_state' => 'required|string|max:100',
-                'location_zipcode' => 'required|string|max:20',
-                'description' => 'required|string|max:5000',
-                'images' => 'required|array|min:1|max:8',
-                'images.*' => 'required|image|mimes:jpeg,jpg,png|max:10240',
-            ]);
-
-            // get user ID
-            $userId = Auth::user();
-            $formData['user_id'] = $userId->id;
-
             // begin db transaction
             DB::beginTransaction();
 
@@ -98,8 +98,6 @@ class CarListingController extends Controller
         } catch (\Exception $e) {
             // rollback db transaction
             DB::rollBack();
-
-            dd($e);
 
             // redirect user
             return redirect()->route('profile.index')->with('error', 'There was an error!');
@@ -125,7 +123,7 @@ class CarListingController extends Controller
                 $img = $manager->read($image->path());
 
                 // resize large images to reasonable dimensions
-                $maxDimension = 2000; // Maximum width or height - it will be 1024x1024
+                $maxDimension = 2000; // set width/height - it will be 1024x1024
                 if ($img->width() > $maxDimension || $img->height() > $maxDimension) {
                     $img->resize($maxDimension, $maxDimension, function ($constraint) {
                         $constraint->aspectRatio();
@@ -191,17 +189,59 @@ class CarListingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(CarListing $listing): View
     {
-        //
+        $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
+
+        return view('carListing.edit')->with('listing', $listing)->with('carMakers', $carMakers);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, CarListing $listing)
     {
-        //
+        // validate new car listing form data
+        $formData = $request->validate([
+            'name' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'car_maker' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'year' => 'required|integer|min:1900|max:' . now()->year,
+            'mileage' => 'required|integer|min:0',
+            'transmission' => 'required|string|in:Manual,Automatic',
+            'fuel_type' => 'required|string|in:Gasoline,Diesel',
+            'engine_size' => 'nullable|string|max:50',
+            'engine_type' => 'nullable|string|max:100',
+            'engine_history' => 'required|string|in:Original Engine,Replaced Engine,Rebuilt Engine',
+            'engine_condition' => 'required|string|in:Running,Needs Tuning,Not Running,Rebuilt Engine,Original Factory Engine',
+            'restoration_history' => 'required|string|in:Fully Restored,Partially Restored,Barn Find,Unrestored Original',
+            'original_parts_percentage' => 'nullable|numeric|min:0|max:100',
+            'body_type' => 'nullable|string|in:Coupe,Sedan,Convertible,Wagon',
+            'seat_material' => 'nullable|string|in:Leather,Cloth,Vinyl,Velour',
+            'odometer' => 'required|string|in:Original,Rebuilt,Unknown',
+            'license_plate_type' => 'nullable|string|in:Original Plate,Modern Plate,No Plate',
+            'documentation_status' => 'required|string|in:Original Papers,Missing Papers,Custom Registration',
+            'exterior_color' => 'nullable|string|max:50',
+            'exterior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
+            'interior_color' => 'nullable|string|max:50',
+            'interior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
+            'location_city' => 'required|string|max:100',
+            'location_state' => 'required|string|max:100',
+            'location_zipcode' => 'required|string|max:20',
+            'description' => 'required|string|max:5000'
+        ]);
+
+        try {
+            // update car listing without updating images
+            $listing->update($formData);
+
+            // redirect user
+            return redirect()->route('profile.index')->with('success', 'Car listing updated successfully!');
+        } catch (\Exception $e) {
+            // redirect user
+            return redirect()->route('profile.index')->with('error', 'There was an error updating car listing!');
+        }
     }
 
     /**
@@ -221,7 +261,7 @@ class CarListingController extends Controller
             return redirect()->route('profile.index')->with('success', 'Car listing deleted.');
         } catch (\Exception $e) {
             // error msg
-            return redirect()->route('profile.index')->with('error', 'There was an error!');
+            return redirect()->route('profile.index')->with('error', 'There was an error deleting car listing!');
         }
     }
 }
