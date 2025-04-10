@@ -6,6 +6,7 @@ use App\Http\Controllers\CarListingController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CompareController;
 use App\Http\Controllers\BookmarkController;
+use App\Http\Controllers\CarListingImagesController;
 use App\Http\Controllers\CarListingOwnerController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\ProfileController;
@@ -25,6 +26,9 @@ Route::post('/listings/store', [CarListingController::class, 'store'])->name('li
 Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 Route::get('/listings/edit/{listing}', [CarListingController::class, 'edit'])->name('listings.edit');
 Route::put('/listings/update/{listing}', [CarListingController::class, 'update'])->name('listings.update');
+
+Route::get('/listings/edit_images/{listing}', [CarListingImagesController::class, 'editImages'])->name('listings.editImages');
+
 Route::delete('/listings/destroy/{listing}', [CarListingController::class, 'destroy'])->name('listings.destroy');
 
 // compare car listings - app & admin user
