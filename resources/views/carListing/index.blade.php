@@ -1,5 +1,6 @@
 <x-layout>
     <div class="car-listings-page container mx-auto mt-10">
+
         {{-- search option --}}
         <section class="search-option text-center mb-5">
             <x-search-option />            
@@ -18,5 +19,6 @@
         <section class="pagination-option px-4 mt-2 mb-10">
             {{ $listings->links() }}
         </section>
+        
     </div>
 </x-layout>

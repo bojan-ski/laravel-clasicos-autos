@@ -190,8 +190,14 @@ class CarListingController extends Controller
         // get car listing owner
         $carListingOwner = $listing->user;
 
+        // get the total number of listings of the car listing owner
+        $totalNumOfCarListings = CarListing::where('user_id', $listing->user_id)->count();
+
         // display/return view
-        return view('carListing.show')->with('listing', $listing)->with('carListingOwner', $carListingOwner);
+        return view('carListing.show')
+            ->with('listing', $listing)
+            ->with('carListingOwner', $carListingOwner)
+            ->with('totalNumOfCarListings', $totalNumOfCarListings);
     }
 
     /**
@@ -270,6 +276,7 @@ class CarListingController extends Controller
 
         // delete images 
         $listingImagesDir = 'cars/' . $listing->id;
+
         if (isset($listingImagesDir)) Storage::disk('public')->deleteDirectory($listingImagesDir);
 
         // delete from database

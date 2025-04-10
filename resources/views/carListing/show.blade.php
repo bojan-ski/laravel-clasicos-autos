@@ -12,7 +12,7 @@ $images = json_decode($listing->images);
             {{-- Edit/Delete options --}}
             @can('update', $listing)
             <div class="flex items-center justify-between">
-                {{-- edit --}}
+                {{-- edit listing --}}
                 <a href="{{ route('listings.edit', $listing) }}"
                     class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 font-semibold cursor-pointer mr-5">
                     <span class="hidden md:block">
@@ -20,10 +20,10 @@ $images = json_decode($listing->images);
                     </span>
                     <span class="md:hidden">
                         <i class="fa-regular fa-pen-to-square"></i>
-                    </span>                  
+                    </span>
                 </a>
 
-                {{-- delete --}}
+                {{-- delete listing --}}
                 <x-selectedCarListingPage.delete-car-listing-option :listing="$listing" />
             </div>
             @endcan
@@ -33,6 +33,7 @@ $images = json_decode($listing->images);
         <x-page-header label="{{ $listing->car_maker }} - {{ $listing->model }} - {{ $listing->year }}"
             updatedClass="text-center text-2xl font-bold text-red-700 mb-5" />
 
+        {{-- Car listing price --}}
         <h3 class="text-center text-3xl font-bold text-red-700 mb-7">
             ${{ number_format($listing->price) }}
         </h3>
@@ -54,7 +55,7 @@ $images = json_decode($listing->images);
                     @foreach($images as $image)
                     <img id="thumbnail" src="{{ Str::startsWith($image, 'http') ? $image : Storage::url($image) }}"
                         alt="car-listing-img"
-                        class="thumbnail w-full h-20 object-cover rounded-md border border-gray-300 hover:ring-2 ring-yellow-400 cursor-pointer">
+                        class="w-full h-20 object-cover rounded-md border border-gray-300 hover:ring-2 ring-yellow-400 cursor-pointer">
                     @endforeach
                 </div>
                 @endif
@@ -167,10 +168,18 @@ $images = json_decode($listing->images);
                                 <strong>Phone:</strong> 123/456789
                                 {{-- FIX THIS --}}
                             </p>
-                            <p>
+                            <p class="mb-2">
                                 <strong>Joined:</strong> {{
                                 \Carbon\Carbon::parse($carListingOwner->created_at)->format('d F Y') }}
                             </p>
+                            <p class="mb-2">
+                                <strong>Total num. of listing:</strong> {{ $totalNumOfCarListings }}
+                            </p>
+                            <a href="{{ route('listingOwner.index') }}"
+                                class="text-blue-500 hover:text-blue-600 font-bold"
+                                onclick="{{ session()->put('car_listing_owner', $listing->user_id); }}">
+                                See all {{ $carListingOwner->username }}'s listings
+                            </a>
                         </div>
                     </div>
                 </div>
