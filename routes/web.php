@@ -28,6 +28,7 @@ Route::get('/listings/edit/{listing}', [CarListingController::class, 'edit'])->n
 Route::put('/listings/update/{listing}', [CarListingController::class, 'update'])->name('listings.update');
 Route::get('/listings/edit_images/{listing}', [CarListingImagesController::class, 'editImages'])->name('listings.editImages');
 Route::post('/listings/set_as_primary_image/{listing}', [CarListingImagesController::class, 'setAsPrimaryImage'])->name('listings.setAsPrimaryImage');
+Route::delete('/listings/destroy_image/{listing}', [CarListingImagesController::class, 'destroyImage'])->name('listings.destroyImage');
 
 Route::delete('/listings/destroy/{listing}', [CarListingController::class, 'destroy'])->name('listings.destroy');
 

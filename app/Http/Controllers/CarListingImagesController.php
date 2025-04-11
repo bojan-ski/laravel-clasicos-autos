@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use App\Models\CarListing;
+use Illuminate\Support\Facades\Storage;
 
 class CarListingImagesController extends Controller
 {
@@ -49,7 +50,45 @@ class CarListingImagesController extends Controller
             return redirect()->route('listings.editImages', $listing)->with('success', 'Primary image changed!');
         }
 
-        // redirect user
-        return redirect()->route('listings.editImages', $listing)->with('error', 'There was an error!');
+        // if image is not in array - redirect user with error
+        return back()->with('error', 'There was an error updating the primary image!');
+    }
+
+    // Delete image
+    public function destroyImage(Request $request, CarListing $listing): RedirectResponse
+    {
+        $imagePath = $request->input('image');
+        $images = json_decode($listing->images) ?? [];
+
+        // if there is only one image in images array
+        if(count($images) <= 1) return back()->with('error', 'There needs to be at least one image!');
+
+        // clean up image path
+        if (Str::contains($imagePath, '/storage/')) {
+            $imagePath = Str::replaceFirst('/storage/', '', $imagePath);
+        }
+
+        // check if image is in images array
+        $key = array_search($imagePath, $images);
+
+        // if image is in images array
+        if ($key !== false) {
+            // delete image from storage
+            Storage::disk('public')->delete($imagePath);
+
+            // delete image from database
+            unset($images[$key]);
+
+            $images = array_values($images);
+
+            $listing->images = json_encode($images);
+            $listing->save();
+
+            // redirect user
+            return redirect()->route('listings.editImages', $listing)->with('success', 'Image deleted.');
+        }
+
+        // if image is not in array - redirect user with error
+        return back()->with('error', 'There was an error deleting the image!');
     }
 }

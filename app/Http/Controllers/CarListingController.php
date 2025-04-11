@@ -274,7 +274,7 @@ class CarListingController extends Controller
         // check if user is owner of the car listing
         $this->authorize('update', $listing);
 
-        // delete images 
+        // delete images from storage
         $listingImagesDir = 'cars/' . $listing->id;
 
         if (isset($listingImagesDir)) Storage::disk('public')->deleteDirectory($listingImagesDir);

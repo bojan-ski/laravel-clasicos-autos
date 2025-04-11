@@ -47,10 +47,16 @@ $images = json_decode($listing->images)
                         </button>
                     </form>
 
+                    <form method="POST" action="{{ route('listings.destroyImage', $listing) }}">
+                        @csrf
+                        @method("DELETE")
 
-                    <button type="submit" class="btn">
-                        Delete
-                    </button>
+                        <x-input-text id='image' name='image' type='hidden' value="{{ Str::startsWith($image, 'http') ? $image : Storage::url($image) }}" />
+
+                        <button type="submit" class="btn">
+                            Delete
+                        </button>
+                    </form>                    
                 </div>
             </div>
             @endforeach
