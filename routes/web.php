@@ -23,14 +23,14 @@ Route::get('/listings/advance_search', [SearchController::class, 'showAdvanceSea
 Route::get('/listings/filter', [SearchController::class, 'filter'])->name('listings.filter');
 Route::get('/listings/create', [CarListingController::class, 'create'])->name('listings.create')->middleware('auth');
 Route::post('/listings/store', [CarListingController::class, 'store'])->name('listings.store')->middleware('auth');
-Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 Route::get('/listings/edit/{listing}', [CarListingController::class, 'edit'])->name('listings.edit');
 Route::put('/listings/update/{listing}', [CarListingController::class, 'update'])->name('listings.update');
 Route::get('/listings/edit_images/{listing}', [CarListingImagesController::class, 'editImages'])->name('listings.editImages');
 Route::post('/listings/set_as_primary_image/{listing}', [CarListingImagesController::class, 'setAsPrimaryImage'])->name('listings.setAsPrimaryImage');
 Route::delete('/listings/destroy_image/{listing}', [CarListingImagesController::class, 'destroyImage'])->name('listings.destroyImage');
-
+Route::post('/listings/add_new_images/{listing}', [CarListingImagesController::class, 'addNewImages'])->name('listings.addNewImages');
 Route::delete('/listings/destroy/{listing}', [CarListingController::class, 'destroy'])->name('listings.destroy');
+Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 
 // compare car listings - app & admin user
 Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare.show');
