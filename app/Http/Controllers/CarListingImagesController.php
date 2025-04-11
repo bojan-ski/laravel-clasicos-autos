@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Models\CarListing;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -112,7 +113,7 @@ class CarListingImagesController extends Controller
         $totalImagesAfterAddition = count($existingImages) + $newImagesCount;
 
         if ($totalImagesAfterAddition > 8) {
-            return back()->with('error', 'Adding these images would exceed the limit of 8 images!');
+            return back()->with('error', 'Adding new images will exceed the limit of 8 images!');
         }
 
         // process images        
@@ -127,7 +128,8 @@ class CarListingImagesController extends Controller
         }
     }
 
-    private function processAndSaveImages(array $formDataImages, CarListing $listing, array $existingImages): void
+    // process uploaded image/images and update listing/images gallery
+    public function processAndSaveImages(array $formDataImages, CarListing $listing, array $existingImages = []): void
     {
         try {
             // create path for images
@@ -186,17 +188,28 @@ class CarListingImagesController extends Controller
                 }
             }
 
-            if ($existingImages) {
+            if (count($existingImages) > 0) {
                 // merge existing images with new images
                 $updatedCarListingImages = array_merge($existingImages, $carListingImages);
 
                 // update the car listing with the combined image data
                 $listing->images = json_encode($updatedCarListingImages);
+            } else {
+                // update the car listing with the JSON data - images
+                $listing->images = json_encode($carListingImages);
             }
 
             // save images in database
             $listing->save();
         } catch (\Exception $e) {
+            if (count($existingImages) == 0){
+                // rollback db transaction
+                DB::rollBack();
+    
+                // delete the incomplete car listing
+                $listing->delete();
+            }
+
             // error msg
             throw new \Exception('Image processing failed');
         }
