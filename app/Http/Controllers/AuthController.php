@@ -11,19 +11,28 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
+    /**
+     * Display user register user page
+     */
     public function register(): View
     {
         return view('auth.register');
     }
 
+    /**
+     * Create user account
+     */
     public function store(Request $request): RedirectResponse
     {
         // check new user data
         $newUserData = $request->validate([
             'username' => 'required|string|max:64',
             'email' => 'required|string|email|max:64|unique:users',
+            'phone_number' => 'required|string|max:20|regex:/^[0-9\+\-\(\)\/\s]*$/',
             'password' => 'required|string|min:6|confirmed',
-            'safe_word' => 'required|string',
+            'safe_word' => 'required|string|max:20',
+            'terms_and_conditions' => 'required|accepted',
+            'privacy_policy' => 'required|accepted',
         ]);
 
         // hash password
@@ -36,11 +45,17 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Account created. You can login now.');
     }
 
+    /**
+     * Display user login page
+     */
     public function login(): View
     {
         return view('auth.login');
     }
 
+    /**
+     * Authenticate user
+     */
     public function authenticate(Request $request): RedirectResponse
     {
         // check user provided credentials
@@ -63,11 +78,17 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Display user forgot password page
+     */
     public function forgotPassword(): View
     {
         return view('auth.forgot-password');
     }
 
+    /**
+     * Reset user password
+     */
     public function resetPassword(Request $request): RedirectResponse
     {
         // check user provided data
@@ -96,11 +117,18 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Account created. You can login now.');
     }
 
+    /**
+     * Logout user
+     */
     public function logout(Request $request): RedirectResponse
     {
+        // logout user
         Auth::logout();
 
+        // invalidate session
         $request->session()->invalidate();
+
+        // regenerate the csrf token
         $request->session()->regenerateToken();
 
         // redirect user

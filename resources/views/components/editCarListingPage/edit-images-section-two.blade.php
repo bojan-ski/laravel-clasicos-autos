@@ -7,7 +7,7 @@
     @foreach($images as $image)
     <div class="gallery-image bg-white rounded-2xl shadow-md border border-yellow-300 p-3">
         <img src="{{ Str::startsWith($image, 'http') ? $image : Storage::url($image) }}" alt="car-listing-img"
-            class="w-full object-cover rounded-md mb-2 border border-gray-300">
+            class="w-full h-[400px] md:h-[300px] lg:h-[250px] object-cover rounded-md mb-2 border border-gray-300">
 
         <div class="gallery-image-options flex items-center justify-between">
             {{-- set image as primary image --}}

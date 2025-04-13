@@ -30,9 +30,9 @@ class ProfileController extends Controller
     {
         // check user provided data
         $formData = $request->validate([
-            'old_safe_word' => 'required|string',
-            'new_safe_word' => 'required|string|different:old_safe_word',
-            'confirm_safe_word' => 'required|string|same:new_safe_word'
+            'old_safe_word' => 'required|string|max:20',
+            'new_safe_word' => 'required|string|max:20|different:old_safe_word',
+            'confirm_safe_word' => 'required|string|max:20|same:new_safe_word'
         ]);
 
         // get user data
@@ -50,7 +50,7 @@ class ProfileController extends Controller
         $user->save();
 
         // redirect user
-        return redirect()->route('profile.index')->with('success', 'Safe word updated');
+        return back()->with('success', 'Safe word updated');
     }
 
     /**
@@ -79,7 +79,7 @@ class ProfileController extends Controller
         $user->save();
 
         // redirect user
-        return redirect()->route('profile.index')->with('success', 'Password updated');
+        return back()->with('success', 'Password updated');
     }
 
     /**
