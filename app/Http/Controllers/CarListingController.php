@@ -193,7 +193,7 @@ class CarListingController extends Controller
             return redirect()->route('profile.index')->with('success', 'Car listing updated successfully!');
         } catch (\Exception $e) {
             // redirect user
-            return redirect()->route('profile.index')->with('error', 'There was an error updating car listing!');
+            return back()->with('error', 'There was an error updating car listing!');
         }
     }
 

@@ -150,7 +150,7 @@
                     value="{{ request('description') }}" placeholder='Enter car description' :required="true" />
 
                 {{-- images --}}
-                <x-input-file-upload id='images' name='images[]' label='Car images - max 8 *' :required="true"/>
+                <x-input-file-upload id='images' name='images' label='Car images - max 8 *' :required="true"/>
             </div>
 
             {{-- submit button --}}

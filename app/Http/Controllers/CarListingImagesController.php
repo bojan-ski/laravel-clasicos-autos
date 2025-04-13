@@ -8,23 +8,34 @@ use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\CarListing;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
 class CarListingImagesController extends Controller
 {
+    use AuthorizesRequests;
+
     // Display edit images page
     public function editImages(CarListing $listing): View
     {
+        // check if user is owner of the car listing
+        $this->authorize('update', $listing);
+
+        // display/return view
         return view('carListing.edit_images')->with('listing', $listing);
     }
 
     // Set image as primary
     public function setAsPrimaryImage(Request $request, CarListing $listing): RedirectResponse
     {
+        // check if user is owner of the car listing
+        $this->authorize('update', $listing);
+
+        // get image path & existing images
         $imagePath = $request->input('image');
-        $images = json_decode($listing->images) ?? [];
+        $existingImages = json_decode($listing->images);
 
         // clean up image path
         if (Str::contains($imagePath, '/storage/')) {
@@ -32,21 +43,21 @@ class CarListingImagesController extends Controller
         }
 
         // check if image is in array/images
-        $key = array_search($imagePath, $images);
+        $key = array_search($imagePath, $existingImages);
 
         // if image is in array
         if ($key !== false) {
             // remove the image from its current position
-            unset($images[$key]);
+            unset($existingImages[$key]);
 
             // reset images order
-            $images = array_values($images);
+            $existingImages = array_values($existingImages);
 
             // add the image to the beginning of the array
-            array_unshift($images, $imagePath);
+            array_unshift($existingImages, $imagePath);
 
             // update listing
-            $listing->images = json_encode($images);
+            $listing->images = json_encode($existingImages);
             $listing->save();
 
             // redirect user
@@ -54,17 +65,21 @@ class CarListingImagesController extends Controller
         }
 
         // if image is not in array - redirect user with error
-        return back()->with('error', 'There was an error updating the primary image!');
+        return back()->with('error', 'There was an error changing the primary image!');
     }
 
     // Delete image
     public function destroyImage(Request $request, CarListing $listing): RedirectResponse
     {
+        // check if user is owner of the car listing
+        $this->authorize('update', $listing);
+
+        // get image path & existing images
         $imagePath = $request->input('image');
-        $images = json_decode($listing->images) ?? [];
+        $existingImages = json_decode($listing->images);
 
         // if there is only one image in images array
-        if (count($images) <= 1) return back()->with('error', 'There needs to be at least one image!');
+        if (count($existingImages) <= 1) return back()->with('error', 'There needs to be at least one image!');
 
         // clean up image path
         if (Str::contains($imagePath, '/storage/')) {
@@ -72,7 +87,7 @@ class CarListingImagesController extends Controller
         }
 
         // check if image is in images array
-        $key = array_search($imagePath, $images);
+        $key = array_search($imagePath, $existingImages);
 
         // if image is in images array
         if ($key !== false) {
@@ -80,11 +95,11 @@ class CarListingImagesController extends Controller
             Storage::disk('public')->delete($imagePath);
 
             // delete image from database
-            unset($images[$key]);
+            unset($existingImages[$key]);
 
-            $images = array_values($images);
+            $existingImages = array_values($existingImages);
 
-            $listing->images = json_encode($images);
+            $listing->images = json_encode($existingImages);
             $listing->save();
 
             // redirect user
@@ -98,8 +113,11 @@ class CarListingImagesController extends Controller
     // add new image/images
     public function addNewImages(Request $request, CarListing $listing): RedirectResponse
     {
+        // check if user is owner of the car listing
+        $this->authorize('update', $listing);
+
         // check if images gallery is over 8 images
-        $existingImages = json_decode($listing->images) ?? [];
+        $existingImages = json_decode($listing->images);
         if (count($existingImages) === 8) return back()->with('error', 'The limit is 8 images!');
 
         // validate form data
@@ -116,12 +134,12 @@ class CarListingImagesController extends Controller
             return back()->with('error', 'Adding new images will exceed the limit of 8 images!');
         }
 
-        // process images        
+        // process image/images        
         try {
             $this->processAndSaveImages($request->file('images'), $listing, $existingImages);
 
             // redirect user
-            return redirect()->route('listings.editImages', $listing)->with('success', 'Images gallery updated');
+            return back()->with('success', 'Images gallery updated');
         } catch (\Exception $e) {
             // redirect user with error
             return back()->with('error', 'There was an error updating the images gallery!');
@@ -202,10 +220,10 @@ class CarListingImagesController extends Controller
             // save images in database
             $listing->save();
         } catch (\Exception $e) {
-            if (count($existingImages) == 0){
+            if (count($existingImages) == 0) {
                 // rollback db transaction
                 DB::rollBack();
-    
+
                 // delete the incomplete car listing
                 $listing->delete();
             }
