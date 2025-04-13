@@ -50,7 +50,7 @@ class CarListingImagesController extends Controller
             $listing->save();
 
             // redirect user
-            return redirect()->route('listings.editImages', $listing)->with('success', 'Primary image changed!');
+            return back()->with('success', 'Primary image changed!');
         }
 
         // if image is not in array - redirect user with error
@@ -88,7 +88,7 @@ class CarListingImagesController extends Controller
             $listing->save();
 
             // redirect user
-            return redirect()->route('listings.editImages', $listing)->with('success', 'Image deleted.');
+            return back()->with('success', 'Image deleted.');
         }
 
         // if image is not in array - redirect user with error
