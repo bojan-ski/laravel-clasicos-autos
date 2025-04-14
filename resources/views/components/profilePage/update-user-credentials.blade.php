@@ -11,12 +11,12 @@
                 placeholder='Enter your old safe word' :require="true" />
 
             {{-- new safe word --}}
-            <x-input-text id='new_safe_word' name='new_safe_word' label='New safe word'
-                placeholder='Enter your new safe word' :require="true" />
+            <x-input-text id='new_safe_word' name='new_safe_word' label='Enter your new safe word'
+                placeholder='max 20 characters' :require="true" />
 
             {{-- confirmation new safe word --}}
-            <x-input-text id='confirm_safe_word' name='confirm_safe_word' label='Confirm new safe word'
-                placeholder='Confirm your new safe word' :require="true" />
+            <x-input-text id='confirm_safe_word' name='confirm_safe_word' label='Confirm your new safe word'
+                placeholder='max 20 characters' :require="true" />
 
             {{-- submit button --}}
             <x-button type='submit' label='Change safe word' />
@@ -34,12 +34,12 @@
                 placeholder='Enter your old password' :require="true" />
 
             {{-- new password --}}
-            <x-input-text id='password' name='password' type='password' label='New password'
-                placeholder='Enter your new password' :require="true" />
+            <x-input-text id='password' name='password' type='password' label='Enter your new password'
+                placeholder='min 6 characters' :require="true" />
 
             {{-- confirmation new password --}}
             <x-input-text id='password_confirmation' name='password_confirmation' type='password'
-                label='Confirm new password' placeholder='Confirm your new password' :require="true" />
+                label='Confirm your new password' placeholder='min 6 characters' :require="true" />
 
             {{-- submit button --}}
             <x-button type='submit' label='Change password' />

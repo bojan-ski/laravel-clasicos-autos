@@ -21,6 +21,14 @@
         </p>
         <p class="mb-3">
             <span class="block md:inline-block">
+                Phone number:
+            </span>
+            <span class="font-semibold">
+                {{ $user->phone_number }}
+            </span>
+        </p>
+        <p class="mb-3">
+            <span class="block md:inline-block">
                 Account created:
             </span>
             <span class="font-semibold">

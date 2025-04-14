@@ -73,9 +73,6 @@
                 <span>
                     <i class="fa-solid fa-circle-plus"></i>
                 </span>
-                <span class="md:hidden">
-                    <i class="fa-solid fa-car"></i>
-                </span>
                 <span class="hidden md:block">
                     List Car
                 </span>
