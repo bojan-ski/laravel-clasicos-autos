@@ -14,8 +14,10 @@ class CarListingOwnerController extends Controller
      */
     public function index(Request $request): View
     {
-        // get car listing owner id from session
-        $carListingOwnerId = $request->get('car_listing_owner_id');
+        // get car listing owner id
+        $carListingOwnerId = $request->owner_id;
+
+        // dd($carListingOwnerId);
 
         // get car listing owner information
         $carListingOwner = User::where('id', $carListingOwnerId)->first();

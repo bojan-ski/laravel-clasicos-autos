@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use App\Models\CarListing;
+use Illuminate\View\View;
 
 class AdminUserController extends Controller
 {
@@ -27,6 +28,20 @@ class AdminUserController extends Controller
 
         // display/return view
         return view('admin.index')->with('appUsers', $appUsers)->with('userListingCounts', $userListingCounts);
+    }
+
+    /**
+     * Display selected app user car listings
+     */
+    public function userListings(User $user): View
+    {
+        // get all car listings posted by the selected app user
+        $listings = $user->userCarListings()->latest()->paginate(12);
+
+        // display/return view
+        return view('carListingOwner.index')
+            ->with('listings', $listings)
+            ->with('carListingOwner', $user);
     }
 
     /**

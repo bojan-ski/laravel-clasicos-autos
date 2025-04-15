@@ -12,12 +12,10 @@ use App\Http\Controllers\CarListingOwnerController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\ProfileController;
 
-// home page - app & admin user
 Route::get('/', function () {
     return view('home.index');
 })->name('home.index');
 
-// car listings - app & admin user
 Route::prefix('listings')->group(function () {
     Route::get('/', [CarListingController::class, 'index'])->name('listings');
     Route::get('/search', [SearchController::class, 'search'])->name('listings.search');
@@ -56,20 +54,16 @@ Route::prefix('listings')->group(function () {
 // Route::delete('/listings/destroy/{listing}', [CarListingController::class, 'destroy'])->name('listings.destroy');
 // Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 
-// compare car listings - app & admin user
 Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare.show');
 Route::get('/compare/clear', [CompareController::class, 'clearCompare'])->name('compare.clear');
 Route::post('/compare/add/{listing}', [CompareController::class, 'addToCompare'])->name('compare.add');
 Route::post('/compare/remove/{listing}', [CompareController::class, 'removeFromCompare'])->name('compare.remove');
 
-// car listing owner - app & admin user
 Route::get('/listing_owner', [CarListingOwnerController::class, 'index'])->name('listingOwner.index');
 
-// legal - app & admin user
 Route::get('/privacy_policy', [LegalController::class, 'privacyPolicy'])->name('privacyPolicy');
 Route::get('/terms_and_conditions', [LegalController::class, 'termsAndConditions'])->name('termsAndConditions');
 
-// auth - app & admin user
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'store'])->name('register.store');
@@ -82,21 +76,20 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    // auth - app & admin user
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // bookmark car listings - app & admin user
     Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
     Route::post('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
     Route::delete('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
 
-    // app user profile - app user
+    // app user only 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile/update_safe_word', [ProfileController::class, 'updateSafeWord'])->name('profile.updateSafeWord');
     Route::put('/profile/update_password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // 
+    // admin user only
     Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
-    Route::delete('/delete_app_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
+    Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');
+    Route::delete('/delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
 });
