@@ -8,12 +8,12 @@
             {{-- clear compare page/session --}}
             @if ($selectedCarListings->isNotEmpty())
             <a href="{{ route('compare.clear') }}"
-                class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 font-semibold">
+                class="bg-red-600 text-white px-5 py-2 rounded-md hover:bg-red-700 font-semibold">
                 <span class="hidden md:block">
                     Clear All
                 </span>
                 <span class="md:hidden">
-                    <i class="fa-solid fa-trash-can"></i>
+                    <i class="fa-solid fa-x"></i>
                 </span>
             </a>
             @endif

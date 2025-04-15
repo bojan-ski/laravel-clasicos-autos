@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CarListingController;
@@ -94,4 +95,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/update_safe_word', [ProfileController::class, 'updateSafeWord'])->name('profile.updateSafeWord');
     Route::put('/profile/update_password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
     Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // 
+    Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
+    Route::delete('/delete_app_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
 });

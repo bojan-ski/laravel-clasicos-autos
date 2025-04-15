@@ -17,9 +17,7 @@
                 <strong>Email:</strong> {{ $carListingOwner->email }}
             </p>
             <p class="mb-2">
-                {{-- FIX THIS --}}
-                <strong>Phone:</strong> 123/456789
-                {{-- FIX THIS --}}
+                <strong>Phone:</strong> {{ $carListingOwner->phone_number }}
             </p>
             <p class="mb-2">
                 <strong>Joined:</strong> {{
@@ -28,10 +26,9 @@
             <p class="mb-2">
                 <strong>Total num. of listing:</strong> {{ $totalNumOfCarListings }}
             </p>
-            <a href="{{ route('listingOwner.index') }}" class="text-blue-500 hover:text-blue-600 font-bold"
-                onclick="{{ session()->put('car_listing_owner', $carListingOwner->id); }}">
-                See all {{ $carListingOwner->username }}'s listings
-            </a>
+
+            {{-- see all car listing's owner car listings --}}
+            <x-car-listing-owner-link label="See all {{$carListingOwner->username}} listings" :userId="$carListingOwner->id"/>
         </div>
     </div>
 </div>

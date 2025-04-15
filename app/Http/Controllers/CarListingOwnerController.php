@@ -9,10 +9,13 @@ use App\Models\User;
 
 class CarListingOwnerController extends Controller
 {
-    public function index(): View
+    /**
+     * Display selected car listing owner and all posted car listings by that owner.
+     */
+    public function index(Request $request): View
     {
         // get car listing owner id from session
-        $carListingOwnerId = session()->get('car_listing_owner', []);
+        $carListingOwnerId = $request->get('car_listing_owner_id');
 
         // get car listing owner information
         $carListingOwner = User::where('id', $carListingOwnerId)->first();

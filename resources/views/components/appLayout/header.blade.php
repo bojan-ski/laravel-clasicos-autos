@@ -37,9 +37,14 @@
                             Bookmarked
                         </a>
                     </li>
-                    <li>
+                    <li class="mb-3">
                         <a href="{{ route('profile.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('profile') ? 'bg-yellow-500' : '' }}">
                             Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('app_users') ? 'bg-yellow-500' : '' }}">
+                            App Users
                         </a>
                     </li>
                     @endauth
@@ -62,6 +67,9 @@
             </a>
             <a href="{{ route('profile.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('profile') ? 'bg-yellow-500' : '' }}">
                 Profile
+            </a>
+            <a href="{{ route('admin.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('app_users') ? 'bg-yellow-500' : '' }}">
+                App Users
             </a>
             @endauth
         </div>

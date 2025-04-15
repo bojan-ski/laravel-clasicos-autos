@@ -27,7 +27,7 @@
                 {{ $user->phone_number }}
             </span>
         </p>
-        <p class="mb-3">
+        <p>
             <span class="block md:inline-block">
                 Account created:
             </span>
@@ -35,18 +35,10 @@
                 {{ \Carbon\Carbon::parse($user->created_at)->format('d.m.Y') }}
             </span>
         </p>
-
-        {{-- legal links --}}
-        <a href="{{ route('termsAndConditions') }}" class="text-blue-500 hover:text-blue-600 font-bold mr-3">
-            Terms & Conditions
-        </a>
-        <a href="{{ route('privacyPolicy') }}" class="text-blue-500 hover:text-blue-600 font-bold">
-            Privacy Policy
-        </a>
     </div>
 
     {{-- delete account --}}
     <div class="text-end">
-        <x-profilePage.delete-account-option />        
+        <x-profilePage.delete-account-option />
     </div>
 </section>

@@ -15,7 +15,7 @@ class DummyCarListingSeeder extends Seeder
      */
     public function run(): void
     {      
-        CarListing::factory(100)->create([
+        CarListing::factory(300)->create([
             'user_id' => function () {
                 return User::where('role', 'app_user')->inRandomOrder()->first()->id;
             },
