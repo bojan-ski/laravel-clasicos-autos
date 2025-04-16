@@ -14,8 +14,10 @@ class SearchController extends Controller
      */
     public function search(Request $request): View
     {
+        // get search term
         $searchTerm = strtolower($request->get('search_term'));
 
+        // start query search
         $query = CarListing::query();
 
         if ($searchTerm) {
@@ -38,8 +40,10 @@ class SearchController extends Controller
      */
     public function showAdvanceSearch(): View
     {
+        // get car makers list from db
         $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
 
+        // display/return view
         return view('carListing.advance_search')->with('carMakers', $carMakers);
     }
 
@@ -48,9 +52,10 @@ class SearchController extends Controller
      */
     public function filter(Request $request)
     {
+        // get car makers list from db
         $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
 
-        // RUN QUERY
+        // start query search
         $query = CarListing::query();
 
         // collect all filter parameters
@@ -66,7 +71,7 @@ class SearchController extends Controller
             $query->where('mileage', '<=', $request->mileage);
         }
 
-        // price
+        // price filters
         if ($request->filled('price_from') && $request->filled('price_to')) {
             $query->whereBetween('price', [
                 $request->price_from,
@@ -78,7 +83,7 @@ class SearchController extends Controller
             $query->where('price', '<=', $request->price_to);
         }
 
-        // date 
+        // date filters
         if ($request->filled('year_from') && $request->filled('year_to')) {
             $query->whereBetween('year', [
                 $request->year_from,
@@ -90,7 +95,7 @@ class SearchController extends Controller
             $query->where('year', '<=', $request->year_to);
         }
 
-        // color
+        // color filters
         if ($request->filled('exterior_color')) {
             $query->where('exterior_color', 'like', '%' . $request->exterior_color . '%');
         }

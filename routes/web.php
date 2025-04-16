@@ -16,6 +16,7 @@ Route::get('/', function () {
     return view('home.index');
 })->name('home.index');
 
+// listings feature
 Route::prefix('listings')->group(function () {
     Route::get('/', [CarListingController::class, 'index'])->name('listings');
     Route::get('/search', [SearchController::class, 'search'])->name('listings.search');
@@ -25,32 +26,35 @@ Route::prefix('listings')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::get('/create', [CarListingController::class, 'create'])->name('listings.create');
         Route::post('/store', [CarListingController::class, 'store'])->name('listings.store');
-        
+
         Route::get('/edit/{listing}', [CarListingController::class, 'edit'])->name('listings.edit');
         Route::put('/update/{listing}', [CarListingController::class, 'update'])->name('listings.update');
-    
+
         Route::get('/edit_images/{listing}', [CarListingImagesController::class, 'editImages'])->name('listings.editImages');
         Route::post('/set_as_primary_image/{listing}', [CarListingImagesController::class, 'setAsPrimaryImage'])->name('listings.setAsPrimaryImage');
         Route::delete('/destroy_image/{listing}', [CarListingImagesController::class, 'destroyImage'])->name('listings.destroyImage');
         Route::post('/add_new_images/{listing}', [CarListingImagesController::class, 'addNewImages'])->name('listings.addNewImages');
-    
+
         Route::delete('/destroy/{listing}', [CarListingController::class, 'destroy'])->name('listings.destroy');
     });
 
     Route::get('/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 });
 
-Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare.show');
-Route::get('/compare/clear', [CompareController::class, 'clearCompare'])->name('compare.clear');
-Route::post('/compare/add/{listing}', [CompareController::class, 'addToCompare'])->name('compare.add');
-Route::post('/compare/remove/{listing}', [CompareController::class, 'removeFromCompare'])->name('compare.remove');
+// compare feature
+Route::prefix('compare')->group(function () {
+    Route::get('/', [CompareController::class, 'showCompare'])->name('compare.show');
+    Route::get('/clear', [CompareController::class, 'clearCompare'])->name('compare.clear');
+    Route::post('/add/{listing}', [CompareController::class, 'addToCompare'])->name('compare.add');
+    Route::post('/remove/{listing}', [CompareController::class, 'removeFromCompare'])->name('compare.remove');
+});
 
+// see listing owner feature
 Route::get('/listing_owner', [CarListingOwnerController::class, 'index'])->name('listingOwner.index');
 
-Route::get('/privacy_policy', [LegalController::class, 'privacyPolicy'])->name('privacyPolicy');
-Route::get('/terms_and_conditions', [LegalController::class, 'termsAndConditions'])->name('termsAndConditions');
-
+// GUEST ONLY
 Route::middleware('guest')->group(function () {
+    // auth features
     Route::get('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/register', [AuthController::class, 'store'])->name('register.store');
 
@@ -61,15 +65,24 @@ Route::middleware('guest')->group(function () {
     Route::put('/forgot_password', [AuthController::class, 'resetPassword'])->name('forgotPassword.resetPassword');
 });
 
+// legal features
+Route::get('/privacy_policy', [LegalController::class, 'privacyPolicy'])->name('privacyPolicy');
+Route::get('/terms_and_conditions', [LegalController::class, 'termsAndConditions'])->name('termsAndConditions');
+
+// AUTH ONLY
 Route::middleware('auth')->group(function () {
+    // auth - logout feature
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
-    Route::post('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
-    Route::delete('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+    // bookmark feature
+    Route::prefix('bookmarks')->group(function () {
+        Route::get('/', [BookmarkController::class, 'index'])->name('bookmarks.index');
+        Route::post('/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+        Route::delete('/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
+    });
 
     // app user only 
-    Route::middleware(\App\Http\Middleware\AppUserMiddleware::class)->group(function (){
+    Route::middleware(\App\Http\Middleware\AppUserMiddleware::class)->group(function () {
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
         Route::put('/profile/update_safe_word', [ProfileController::class, 'updateSafeWord'])->name('profile.updateSafeWord');
         Route::put('/profile/update_password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
@@ -77,7 +90,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // admin user only
-    Route::middleware(\App\Http\Middleware\AdminUserMiddleware::class)->group(function (){
+    Route::middleware(\App\Http\Middleware\AdminUserMiddleware::class)->group(function () {
         Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
         Route::get('/app_users/search', [AdminUserController::class, 'search'])->name('admin.search');
         Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');

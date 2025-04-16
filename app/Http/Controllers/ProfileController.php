@@ -7,7 +7,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
-use App\Models\CarListing;
 
 class ProfileController extends Controller
 {
@@ -16,9 +15,11 @@ class ProfileController extends Controller
      */
     public function index(): View
     {
+        // get user profile data
         $user = Auth::user();
 
-        $userCarListings = CarListing::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(8);
+        // get user posted car listings from database
+        $userCarListings = $user->userCarListings()->latest()->paginate(8);
 
         return view('profile.index')->with('user', $user)->with('userCarListings', $userCarListings);
     }
@@ -35,7 +36,7 @@ class ProfileController extends Controller
             'confirm_safe_word' => 'required|string|max:20|same:new_safe_word'
         ]);
 
-        // get user data
+        // get user profile data
         $user = Auth::user();
 
         // check if provided safe word is related to the user
@@ -46,11 +47,16 @@ class ProfileController extends Controller
         };
 
         // if all is good - change safe word
-        $user->safe_word = $formData['new_safe_word'];
-        $user->save();
+        try {
+            $user->safe_word = $formData['new_safe_word'];
+            $user->save();
 
-        // redirect user - with success msg
-        return back()->with('success', 'Safe word updated');
+            // redirect user - with success msg
+            return back()->with('success', 'Safe word updated.');
+        } catch (\Exception $e) {
+            // redirect user - with error msg
+            return back()->with('error', 'There was an error while updating the safe word!');
+        }
     }
 
     /**
@@ -64,7 +70,7 @@ class ProfileController extends Controller
             'password' => 'required|string|min:6|different:old_password|confirmed'
         ]);
 
-        // get user data
+        // get user profile data
         $user = Auth::user();
 
         // check if provided password is related to the user
@@ -75,18 +81,25 @@ class ProfileController extends Controller
         };
 
         // if all is good - change password
-        $user->password = Hash::make($formData['password']);
-        $user->save();
+        try {
+            $user->password = Hash::make($formData['password']);
+            $user->save();
 
-        // redirect user - with success msg
-        return back()->with('success', 'Password updated');
+            // redirect user - with success msg
+            return back()->with('success', 'Password updated');
+        } catch (\Exception $e) {
+            // redirect user - with error msg
+            return back()->with('error', 'There was an error while updating the password!');
+        }
     }
+
 
     /**
      * Delete user account
      */
     public function destroy(Request $request): RedirectResponse
     {
+        // get user profile data
         $user = Auth::user();
 
         // verify user/password
@@ -94,20 +107,25 @@ class ProfileController extends Controller
             return redirect()->back()->with('error', 'Password is incorrect, account deletion failed.');
         }
 
-        // if all is good run func
-        // delete user from db
-        $user->delete();
+        // if all is good delete account
+        try {
+            // delete user from db
+            $user->delete();
 
-        // logout user
-        Auth::logout();
+            // logout user
+            Auth::logout();
 
-        // invalidate session
-        $request->session()->invalidate();
+            // invalidate session
+            $request->session()->invalidate();
 
-        // regenerate the csrf token
-        $request->session()->regenerateToken();
+            // regenerate the csrf token
+            $request->session()->regenerateToken();
 
-       // redirect user - with success msg
-        return redirect('/')->with('success', 'Your account has been deleted.');
+            // redirect user - with success msg
+            return redirect('/')->with('success', 'Your account has been deleted.');
+        } catch (\Exception $e) {
+            // redirect user - with error msg
+            return back()->with('error', 'There was an error while deleting your account!');
+        }
     }
 }
