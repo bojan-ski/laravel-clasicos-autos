@@ -26,13 +26,10 @@ class SearchController extends Controller
             });
         }
 
-        // sorting
-        $query->orderBy('created_at', 'desc');
-
         // results
-        $listings = $query->paginate(12)->appends(['search_term' => $searchTerm]);
+        $listings = $query->latest()->paginate(12)->appends(['search_term' => $searchTerm]);
 
-        // display view
+        // display/return view
         return view('carListing.index')->with('listings', $listings);
     }
 
@@ -140,11 +137,8 @@ class SearchController extends Controller
             }
         }
 
-        // sorting
-        $query->orderBy('created_at', 'desc');
-
         // results
-        $advanceSearchResult = $query->paginate(8)->appends($filterParams);
+        $advanceSearchResult = $query->latest()->paginate(8)->appends($filterParams);
 
         // display view
         return view('carListing.advance_search')->with([

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use App\Models\User;
 use App\Models\CarListing;
-use Illuminate\View\View;
 
 class AdminUserController extends Controller
 {
@@ -18,6 +18,36 @@ class AdminUserController extends Controller
     {
         // get all app users
         $appUsers = User::where('role', 'app_user')->latest()->paginate(12);
+
+        // get the number of car listings for each app user
+        $userListingCounts = CarListing::query()
+            ->select('user_id', DB::raw('COUNT(*) as listing_count'))
+            ->groupBy('user_id')
+            ->get()
+            ->keyBy('user_id');
+
+        // display/return view
+        return view('admin.index')->with('appUsers', $appUsers)->with('userListingCounts', $userListingCounts);
+    }
+
+    /**
+     * Search for a specific user/users - search option
+     */
+    public function search(Request $request): View
+    {
+        $searchTerm = strtolower($request->get('search_term'));
+
+        $query = User::query();
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->whereRaw("LOWER(username) like ?", ['%' . $searchTerm . '%'])
+                    ->orWhereRaw('LOWER(email) like ?', ['%' . $searchTerm . '%']);
+            });
+        }
+
+        // results
+        $appUsers = $query->latest()->paginate(12)->appends(['search_term' => $searchTerm]);
 
         // get the number of car listings for each app user
         $userListingCounts = CarListing::query()
@@ -45,7 +75,7 @@ class AdminUserController extends Controller
     }
 
     /**
-     * Delete user account
+     * Delete app user account
      */
     public function deleteUser(Request $request): RedirectResponse
     {

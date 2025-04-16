@@ -90,6 +90,7 @@ Route::middleware('auth')->group(function () {
 
     // admin user only
     Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
+    Route::get('/app_users/search', [AdminUserController::class, 'search'])->name('admin.search');
     Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');
     Route::delete('/delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
 });

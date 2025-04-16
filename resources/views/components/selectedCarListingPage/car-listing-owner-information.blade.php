@@ -28,7 +28,10 @@
             </p>
 
             {{-- see all car listing's owner car listings --}}
-            <x-car-listing-owner-link label="See all {{$carListingOwner->username}} listings" :userId="$carListingOwner->id"/>
+            <a href="{{ route('listingOwner.index') }}" class="text-blue-500 hover:text-blue-600 font-bold"
+                onclick="{{ session()->put('car_listing_owner_id', $carListingOwner->id) }}">
+                See all {{$carListingOwner->username}}'s listings
+            </a>
         </div>
     </div>
 </div>

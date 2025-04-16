@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class CarListingOwnerLink extends Component
+class AppUserSearchOption extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class CarListingOwnerLink extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.car-listing-owner-link');
+        return view('components.admin.app-user-search-option');
     }
 }
