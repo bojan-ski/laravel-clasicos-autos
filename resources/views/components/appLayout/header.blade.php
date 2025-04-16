@@ -77,6 +77,7 @@
         {{-- auth - list car listing --}}
         <div class="navbar-end">
             @auth
+            @can('create', Auth::user())
             <a href="{{ route('listings.create') }}" class="btn text-md mx-2 bg-blue-600 text-white hover:bg-blue-500">
                 <span>
                     <i class="fa-solid fa-circle-plus"></i>
@@ -85,6 +86,7 @@
                     List Car
                 </span>
             </a>
+            @endcan
             {{-- logout button --}}
             <x-logout-button />
             @else

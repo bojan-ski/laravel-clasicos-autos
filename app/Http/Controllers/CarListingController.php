@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Controllers\CarListingImagesController;
 use App\Models\CarListing;
 use App\Models\CarMaker;
-use App\Http\Controllers\CarListingImagesController;
+use App\Models\User;
 
 class CarListingController extends Controller
 {
@@ -30,27 +31,36 @@ class CarListingController extends Controller
      */
     public function index(): View
     {
+        // get all car listings
         $listings = CarListing::latest()->paginate(12);
 
+        // display/return view
         return view('carListing.index')->with('listings', $listings);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(User $user)
     {
+        // check if user is not admin user
+        $this->authorize('create', $user);
+
+        // get car makes list from db
         $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
 
+        // display/return view
         return view('carListing.create')->with('carMakers', $carMakers);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    // Run php artisan storage:link to create a symbolic link from public/storage to storage/app/public
+    public function store(Request $request, User $user): RedirectResponse
     {
-        // Run php artisan storage:link to create a symbolic link from public/storage to storage/app/public
+        // check if user is not admin user
+        $this->authorize('create', $user);
 
         // validate new car listing form data
         $formData = $request->validate([
@@ -102,13 +112,13 @@ class CarListingController extends Controller
             // if all is good - commit transaction
             DB::commit();
 
-            // redirect user
+            // redirect user - with success msg
             return redirect()->route('profile.index')->with('success', 'Car listing created successfully!');
         } catch (\Exception $e) {
             // rollback db transaction
             DB::rollBack();
 
-            // redirect user
+            // redirect user - with error msg
             return redirect()->route('profile.index')->with('error', 'There was an error!');
         }
     }
@@ -118,7 +128,7 @@ class CarListingController extends Controller
      */
     public function show(CarListing $listing): View
     {
-        // get car listing owner
+        // get car listing owner profile data
         $carListingOwner = $listing->user;
 
         // get the total number of listings of the car listing owner
@@ -136,10 +146,10 @@ class CarListingController extends Controller
      */
     public function edit(CarListing $listing): View
     {
-        // check if user is owner of the car listing
+        // check if user is owner of the car listing or is admin user
         $this->authorize('update', $listing);
 
-        // get car makes list form db
+       // get car makes list from db
         $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
 
         // display/return view
@@ -151,7 +161,7 @@ class CarListingController extends Controller
      */
     public function update(Request $request, CarListing $listing)
     {
-        // check if user is owner of the car listing
+        // check if user is owner of the car listing or is admin user
         $this->authorize('update', $listing);
 
         // validate new car listing form data
@@ -189,10 +199,13 @@ class CarListingController extends Controller
             // update car listing without updating images
             $listing->update($formData);
 
-            // redirect user
-            return redirect()->route('profile.index')->with('success', 'Car listing updated successfully!');
+            // redirect user - with success msg
+            $segments = request()->segments();
+
+            // redirect user - with success msg
+            return redirect($segments[0] . '/' . $segments[2])->with('success', 'Car listing updated successfully.');
         } catch (\Exception $e) {
-            // redirect user
+            // redirect user - with error msg
             return back()->with('error', 'There was an error updating car listing!');
         }
     }
@@ -202,23 +215,25 @@ class CarListingController extends Controller
      */
     public function destroy(CarListing $listing): RedirectResponse
     {
-        // check if user is owner of the car listing
+        // check if user is owner of the car listing or is admin user
         $this->authorize('update', $listing);
 
-        // delete images from storage
-        $listingImagesDir = 'cars/' . $listing->id;
+        // set route
+        $route = Auth::user()->role == 'admin_user' ? 'listings' : 'profile.index';
 
-        if (isset($listingImagesDir)) Storage::disk('public')->deleteDirectory($listingImagesDir);
-
-        // delete from database
         try {
+            // delete images from storage
+            $listingImagesDir = 'cars/' . $listing->id;
+            Storage::disk('public')->deleteDirectory($listingImagesDir);
+
+            // delete from database
             $listing->delete();
 
-            // redirect user
-            return redirect()->route('profile.index')->with('success', 'Car listing deleted.');
+            // redirect user - with success msg           
+            return redirect()->route($route)->with('success', 'Car listing deleted.');
         } catch (\Exception $e) {
-            // error msg
-            return redirect()->route('profile.index')->with('error', 'There was an error deleting car listing!');
+            // redirect user - with error msg
+            return redirect()->route($route)->with('error', 'There was an error deleting car listing!');
         }
     }
 }
