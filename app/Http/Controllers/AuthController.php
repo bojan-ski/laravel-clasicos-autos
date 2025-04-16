@@ -12,7 +12,7 @@ use App\Models\User;
 class AuthController extends Controller
 {
     /**
-     * Display user register user page
+     * Display register/create account page
      */
     public function register(): View
     {
@@ -35,14 +35,19 @@ class AuthController extends Controller
             'privacy_policy' => 'required|accepted',
         ]);
 
-        // hash password
-        $newUserData['password'] = Hash::make($newUserData['password']);
+        try {
+            // hash password
+            $newUserData['password'] = Hash::make($newUserData['password']);
 
-        // create new user in db
-        User::create($newUserData);
+            // create new user in db
+            User::create($newUserData);
 
-        // redirect user
-        return redirect()->route('login')->with('success', 'Account created. You can login now.');
+            // // redirect user - with success msg 
+            return redirect()->route('login')->with('success', 'Account created. You can login now.');
+        } catch (\Exception $e) {
+            // redirect user - with error msg
+            return back()->with('error', 'There was an error creating your account!');
+        }
     }
 
     /**
@@ -68,10 +73,14 @@ class AuthController extends Controller
         if (Auth::attempt($userCredentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route('profile.index')->with('success', 'You have logged in');
+            // set route
+            $route = Auth::user()->role == 'admin_user' ? 'admin.index' : 'profile.index';
+
+            // redirect user - with success msg 
+            return redirect()->route($route)->with('success', 'You have logged in');
         }
 
-        // if bad credentials - redirect user
+        // if bad credentials - redirect user with error msg
         return redirect()->back()->withErrors([
             'email' => 'Bad credentials',
             'password' => 'Bad credentials'
@@ -109,12 +118,17 @@ class AuthController extends Controller
             ]);
         };
 
-        // if all is good - updated password
-        $user->password = Hash::make($userCredentials['password']);
-        $user->save();
+        try {
+            // if all is good - updated password
+            $user->password = Hash::make($userCredentials['password']);
+            $user->save();
 
-        // redirect user
-        return redirect()->route('login')->with('success', 'Account created. You can login now.');
+            // redirect user
+            return redirect()->route('login')->with('success', 'Your password has been updated.');
+        } catch (\Exception $e) {
+            // redirect user - with error msg
+            return back()->with('error', 'There was an error updating your password!');
+        }
     }
 
     /**

@@ -49,7 +49,7 @@ class ProfileController extends Controller
         $user->safe_word = $formData['new_safe_word'];
         $user->save();
 
-        // redirect user
+        // redirect user - with success msg
         return back()->with('success', 'Safe word updated');
     }
 
@@ -78,7 +78,7 @@ class ProfileController extends Controller
         $user->password = Hash::make($formData['password']);
         $user->save();
 
-        // redirect user
+        // redirect user - with success msg
         return back()->with('success', 'Password updated');
     }
 
@@ -107,7 +107,7 @@ class ProfileController extends Controller
         // regenerate the csrf token
         $request->session()->regenerateToken();
 
-        // redirect user
+       // redirect user - with success msg
         return redirect('/')->with('success', 'Your account has been deleted.');
     }
 }

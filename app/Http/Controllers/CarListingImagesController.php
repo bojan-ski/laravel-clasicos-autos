@@ -60,7 +60,7 @@ class CarListingImagesController extends Controller
             $listing->images = json_encode($existingImages);
             $listing->save();
 
-            // redirect user
+            // redirect user - with success msg
             return back()->with('success', 'Primary image changed!');
         }
 
@@ -102,7 +102,7 @@ class CarListingImagesController extends Controller
             $listing->images = json_encode($existingImages);
             $listing->save();
 
-            // redirect user
+            // redirect user - with success msg
             return back()->with('success', 'Image deleted.');
         }
 
@@ -138,7 +138,7 @@ class CarListingImagesController extends Controller
         try {
             $this->processAndSaveImages($request->file('images'), $listing, $existingImages);
 
-            // redirect user
+            // redirect user - with success msg
             return back()->with('success', 'Images gallery updated');
         } catch (\Exception $e) {
             // redirect user with error

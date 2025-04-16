@@ -21,9 +21,11 @@ class CompareController extends Controller
 
             $request->session()->put('compare_listings', $compareListings);
 
+            // redirect user - with success msg
             return back()->with('success', 'Car listings added for compare');
         }
 
+        // redirect user - with error msg
         return back()->with('error', 'Only two listings can be compared!');
     }
 
@@ -40,9 +42,11 @@ class CompareController extends Controller
 
             $request->session()->put('compare_listings', array_values($compareListings));
 
+            // redirect user - with success msg
             return back()->with('success', 'Car listings removed from compare');
         }
 
+        // redirect user - with error msg
         return back()->with('error', 'There was an error!');
     }
 
@@ -54,6 +58,7 @@ class CompareController extends Controller
         $selectedCarListingsIds = $request->session()->get('compare_listings', []);
         $selectedCarListings = CarListing::whereIn('id', $selectedCarListingsIds)->get();
 
+        // display/return view
         return view('carListing.compare')->with('selectedCarListings', $selectedCarListings);
     }
 
@@ -64,6 +69,7 @@ class CompareController extends Controller
     {
         $request->session()->forget('compare_listings');
 
+        // redirect user - with success msg
         return back()->with('success', 'Selected listings removed');
     }
 }

@@ -35,8 +35,10 @@ class AdminUserController extends Controller
      */
     public function search(Request $request): View
     {
+        // get search term
         $searchTerm = strtolower($request->get('search_term'));
 
+        // start query search
         $query = User::query();
 
         if ($searchTerm) {

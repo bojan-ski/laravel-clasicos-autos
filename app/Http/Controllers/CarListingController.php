@@ -41,10 +41,10 @@ class CarListingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(User $user)
+    public function create()
     {
         // check if user is not admin user
-        $this->authorize('create', $user);
+        $this->authorize('create', CarListing::class);
 
         // get car makes list from db
         $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
@@ -57,10 +57,10 @@ class CarListingController extends Controller
      * Store a newly created resource in storage.
      */
     // Run php artisan storage:link to create a symbolic link from public/storage to storage/app/public
-    public function store(Request $request, User $user): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         // check if user is not admin user
-        $this->authorize('create', $user);
+        $this->authorize('create', CarListing::class);
 
         // validate new car listing form data
         $formData = $request->validate([
@@ -149,7 +149,7 @@ class CarListingController extends Controller
         // check if user is owner of the car listing or is admin user
         $this->authorize('update', $listing);
 
-       // get car makes list from db
+        // get car makes list from db
         $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
 
         // display/return view
@@ -202,7 +202,6 @@ class CarListingController extends Controller
             // redirect user - with success msg
             $segments = request()->segments();
 
-            // redirect user - with success msg
             return redirect($segments[0] . '/' . $segments[2])->with('success', 'Car listing updated successfully.');
         } catch (\Exception $e) {
             // redirect user - with error msg

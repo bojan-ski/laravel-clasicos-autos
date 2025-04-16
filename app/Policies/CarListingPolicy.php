@@ -29,7 +29,7 @@ class CarListingPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role !== 'admin_user';
+        return $user->role == 'app_user';
     }
 
     /**

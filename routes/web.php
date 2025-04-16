@@ -39,20 +39,6 @@ Route::prefix('listings')->group(function () {
 
     Route::get('/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 });
-// Route::get('/listings', [CarListingController::class, 'index'])->name('listings');
-// Route::get('/listings/search', [SearchController::class, 'search'])->name('listings.search');
-// Route::get('/listings/advance_search', [SearchController::class, 'showAdvanceSearch'])->name('listings.showAdvanceSearch');
-// Route::get('/listings/filter', [SearchController::class, 'filter'])->name('listings.filter');
-// Route::get('/listings/create', [CarListingController::class, 'create'])->name('listings.create')->middleware('auth');
-// Route::post('/listings/store', [CarListingController::class, 'store'])->name('listings.store')->middleware('auth');
-// Route::get('/listings/edit/{listing}', [CarListingController::class, 'edit'])->name('listings.edit');
-// Route::put('/listings/update/{listing}', [CarListingController::class, 'update'])->name('listings.update');
-// Route::get('/listings/edit_images/{listing}', [CarListingImagesController::class, 'editImages'])->name('listings.editImages');
-// Route::post('/listings/set_as_primary_image/{listing}', [CarListingImagesController::class, 'setAsPrimaryImage'])->name('listings.setAsPrimaryImage');
-// Route::delete('/listings/destroy_image/{listing}', [CarListingImagesController::class, 'destroyImage'])->name('listings.destroyImage');
-// Route::post('/listings/add_new_images/{listing}', [CarListingImagesController::class, 'addNewImages'])->name('listings.addNewImages');
-// Route::delete('/listings/destroy/{listing}', [CarListingController::class, 'destroy'])->name('listings.destroy');
-// Route::get('/listings/{listing}', [CarListingController::class, 'show'])->name('listings.show');
 
 Route::get('/compare', [CompareController::class, 'showCompare'])->name('compare.show');
 Route::get('/compare/clear', [CompareController::class, 'clearCompare'])->name('compare.clear');
@@ -83,14 +69,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/bookmarks/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
 
     // app user only 
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::put('/profile/update_safe_word', [ProfileController::class, 'updateSafeWord'])->name('profile.updateSafeWord');
-    Route::put('/profile/update_password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
-    Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::middleware(\App\Http\Middleware\AppUserMiddleware::class)->group(function (){
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::put('/profile/update_safe_word', [ProfileController::class, 'updateSafeWord'])->name('profile.updateSafeWord');
+        Route::put('/profile/update_password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+        Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
     // admin user only
-    Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
-    Route::get('/app_users/search', [AdminUserController::class, 'search'])->name('admin.search');
-    Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');
-    Route::delete('/delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
+    Route::middleware(\App\Http\Middleware\AdminUserMiddleware::class)->group(function (){
+        Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
+        Route::get('/app_users/search', [AdminUserController::class, 'search'])->name('admin.search');
+        Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');
+        Route::delete('/delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
+    });
 });

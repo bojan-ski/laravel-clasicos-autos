@@ -1,6 +1,6 @@
 <header class="header">
     <div class="navbar bg-red-600 text-white px-6 py-4 border-b-4 border-yellow-500">
-        
+
         {{-- Logo --}}
         <div class="navbar-start">
             <h2 class="text-4xl font-bold">
@@ -33,20 +33,25 @@
                     </li>
                     @auth
                     <li class="mb-3">
-                        <a href="{{ route('bookmarks.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('bookmarks') ? 'bg-yellow-500' : '' }}">
+                        <a href="{{ route('bookmarks.index') }}"
+                            class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('bookmarks') ? 'bg-yellow-500' : '' }}">
                             Bookmarked
                         </a>
                     </li>
+                    @if (Auth::user()->role == 'app_user')
                     <li class="mb-3">
-                        <a href="{{ route('profile.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('profile') ? 'bg-yellow-500' : '' }}">
+                        <a href="{{ route('profile.index') }}"
+                            class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('profile') ? 'bg-yellow-500' : '' }}">
                             Profile
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('admin.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('app_users') ? 'bg-yellow-500' : '' }}">
+                    @else<li>
+                        <a href="{{ route('admin.index') }}"
+                            class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('app_users') ? 'bg-yellow-500' : '' }}">
                             App Users
                         </a>
                     </li>
+                    @endif
                     @endauth
                 </ul>
             </div>
@@ -62,22 +67,28 @@
                 Listings
             </a>
             @auth
-            <a href="{{ route('bookmarks.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('bookmarks') ? 'bg-yellow-500' : '' }}">
+            <a href="{{ route('bookmarks.index') }}"
+                class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('bookmarks') ? 'bg-yellow-500' : '' }}">
                 Bookmarked
             </a>
-            <a href="{{ route('profile.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('profile') ? 'bg-yellow-500' : '' }}">
+            @if (Auth::user()->role == 'app_user')
+            <a href="{{ route('profile.index') }}"
+                class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('profile') ? 'bg-yellow-500' : '' }}">
                 Profile
             </a>
-            <a href="{{ route('admin.index') }}" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('app_users') ? 'bg-yellow-500' : '' }}">
+            @else
+            <a href="{{ route('admin.index') }}"
+                class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('app_users') ? 'bg-yellow-500' : '' }}">
                 App Users
             </a>
+            @endif
             @endauth
         </div>
 
         {{-- auth - list car listing --}}
         <div class="navbar-end">
             @auth
-            @can('create', Auth::user())
+            @can('create', App\Models\CarListing::class)
             <a href="{{ route('listings.create') }}" class="btn text-md mx-2 bg-blue-600 text-white hover:bg-blue-500">
                 <span>
                     <i class="fa-solid fa-circle-plus"></i>
