@@ -9,7 +9,10 @@ use App\Http\Controllers\CompareController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CarListingImagesController;
 use App\Http\Controllers\CarListingOwnerController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\LegalController;
+
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
@@ -96,4 +99,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');
         Route::delete('/delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
     });
+
+    // conversation feature
+    Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
+    Route::get('/conversations/{conversation}', [MessageController::class, 'index'])->name('conversations.show');
+    Route::post('/conversations/{conversation}/store', [MessageController::class, 'store'])->name('conversations.store');
+    
+    Route::get('/listings/{listing}/message/{receiverId}', [ConversationController::class, 'conversationThread'])->name('conversations.thread');
 });

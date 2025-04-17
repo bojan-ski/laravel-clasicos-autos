@@ -1,4 +1,4 @@
-<a href="{{ url()->previous() }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold">
+<a href="{{ url()->previous() }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold transition duration-150">
 {{-- <a href="javascript:history.back()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold"> --}}
 {{-- <button onclick="history.back()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md font-semibold cursor-pointer"> --}}
     <span class="hidden md:block">

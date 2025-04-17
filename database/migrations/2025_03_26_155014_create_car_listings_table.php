@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('location_state');
             $table->integer('location_zipcode');
             $table->integer('price');
-            $table->json('images');
+            $table->json('images')->nullable();
             $table->timestamps();
         });
     }

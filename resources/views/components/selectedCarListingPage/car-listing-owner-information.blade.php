@@ -1,4 +1,5 @@
 @props([
+'listing',
 'carListingOwner',
 'totalNumOfCarListings'
 ])
@@ -23,15 +24,31 @@
                 <strong>Joined:</strong> {{
                 \Carbon\Carbon::parse($carListingOwner->created_at)->format('d F Y') }}
             </p>
-            <p class="mb-2">
+            <p>
                 <strong>Total num. of listing:</strong> {{ $totalNumOfCarListings }}
             </p>
 
-            {{-- see all car listing's owner car listings --}}
-            <a href="{{ route('listingOwner.index') }}" class="text-blue-500 hover:text-blue-600 font-bold"
-                onclick="{{ session()->put('car_listing_owner_id', $carListingOwner->id) }}">
-                See all {{$carListingOwner->username}}'s listings
-            </a>
+            {{-- LINKS TO SEE ALL CAR LISTINGS OWNER LISTINGS AND CONTACT --}}
+            @auth
+                @if (auth()->id() !== $listing->user_id)
+                    {{-- see all car listing's owner car listings --}}
+                    <a href="{{ route('listingOwner.index') }}"
+                        class="my-2 block text-blue-500 hover:text-blue-600 hover:underline font-bold"
+                        onclick="{{ session()->put('car_listing_owner_id', $carListingOwner->id) }}">
+                        See all {{ $carListingOwner->username }}'s listings
+                    </a>
+
+                    {{-- contact car listing owner --}}
+                    <a href="{{ route('conversations.thread', [$listing, $carListingOwner->id]) }}"
+                        class="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md font-semibold cursor-pointer">
+                        Send message
+                    </a>
+                @endif
+            @else
+                <a href="{{ route('login') }}" class="block text-red-500 hover:text-red-600 hover:underline font-bold">
+                    Login to contact the seller.
+                </a>
+            @endauth
         </div>
     </div>
 </div>

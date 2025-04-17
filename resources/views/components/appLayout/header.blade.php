@@ -9,7 +9,7 @@
         </div>
 
         {{-- mobile --}}
-        <div class="lg:hidden navbar-center">
+        <div class="xl:hidden navbar-center">
             <div class="dropdown">
                 <div tabindex="0" role="button" class="btn btn-ghost">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
@@ -38,6 +38,12 @@
                             Bookmarked
                         </a>
                     </li>
+                    <li class="mb-3">
+                        <a href="{{ route('conversations.index') }}"
+                            class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('conversations') ? 'bg-yellow-500' : '' }}">
+                            Conversations
+                        </a>
+                    </li>
                     @if (Auth::user()->role == 'app_user')
                     <li class="mb-3">
                         <a href="{{ route('profile.index') }}"
@@ -58,7 +64,7 @@
         </div>
 
         {{-- desktop --}}
-        <div class="hidden lg:block navbar-center">
+        <div class="hidden xl:block navbar-center">
             <a href="/" class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('/') ? 'bg-yellow-500' : '' }}">
                 Home
             </a>
@@ -70,6 +76,10 @@
             <a href="{{ route('bookmarks.index') }}"
                 class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('bookmarks') ? 'bg-yellow-500' : '' }}">
                 Bookmarked
+            </a>
+            <a href="{{ route('conversations.index') }}"
+                class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('conversations') ? 'bg-yellow-500' : '' }}">
+                Conversations
             </a>
             @if (Auth::user()->role == 'app_user')
             <a href="{{ route('profile.index') }}"

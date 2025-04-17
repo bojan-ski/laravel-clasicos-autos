@@ -3,7 +3,7 @@ $images = json_decode($listing->images);
 @endphp
 
 <x-layout>
-    <div class="container mx-auto mt-10">
+    <div class="selected-car-listing-page container mx-auto mt-10">
 
         <div class="flex items-center justify-between mb-5">
             {{-- back to prev page button --}}
@@ -26,30 +26,31 @@ $images = json_decode($listing->images);
 
         {{-- Images carousel & Primary information --}}
         <div class="grid grid-cols-1 lg:grid-cols-3 lg:gap-5 mb-5">
-            {{-- images carousel --}}           
-            <x-selectedCarListingPage.images-carousel :images="json_decode($listing->images)" />           
+            {{-- images carousel --}}
+            <x-selectedCarListingPage.images-carousel :images="json_decode($listing->images)" />
 
             {{-- Car & Car listing owner information --}}
             <div>
                 {{-- car Information --}}
-                <x-selectedCarListingPage.primary-car-listing-information :listing="$listing" />                 
+                <x-selectedCarListingPage.primary-car-listing-information :listing="$listing" />
 
                 {{-- Owner Info Section --}}
-                <x-selectedCarListingPage.car-listing-owner-information :carListingOwner="$carListingOwner" :totalNumOfCarListings="$totalNumOfCarListings" />                 
+                <x-selectedCarListingPage.car-listing-owner-information :listing="$listing" :carListingOwner="$carListingOwner"
+                    :totalNumOfCarListings="$totalNumOfCarListings" />
             </div>
         </div>
 
         {{-- Description Section --}}
-        <x-selectedCarListingPage.car-listing-desc :description="$listing->description" /> 
+        <x-selectedCarListingPage.car-listing-desc :description="$listing->description" />
 
         {{-- Additional Details --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
             {{-- car looks --}}
-            <x-selectedCarListingPage.car-look :listing="$listing" /> 
+            <x-selectedCarListingPage.car-look :listing="$listing" />
 
             {{-- engine & history --}}
-            <x-selectedCarListingPage.car-engine-history :listing="$listing" />             
-        </div>
+            <x-selectedCarListingPage.car-engine-history :listing="$listing" />
+        </div>       
 
     </div>
 </x-layout>
