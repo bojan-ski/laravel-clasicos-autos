@@ -5,14 +5,13 @@
         <x-page-header label='My Conversations' updatedClass='text-center mb-7' />
 
         {{-- conversations container --}}
-        <section class="conversations-list mb-5">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                @forelse ($conversations as $conversation)                   
-                    <x-conversationsPage.conversation-card :conversation="$conversation"/>                
-                @empty
-                    <x-no-data-message message="You have no active conversations." />
-                @endforelse
-            </div>
+        <section
+            class="conversations-list {{ $conversations->isNotEmpty() ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' : '' }} mb-5">
+            @forelse ($conversations as $conversation)
+                <x-conversationsPage.conversation-card :conversation="$conversation" />
+            @empty
+                <x-no-data-message message="You have no active conversations." />
+            @endforelse
         </section>
 
         {{-- pagination --}}

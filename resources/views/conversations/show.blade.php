@@ -22,7 +22,7 @@ $conversation->sender->username;
 
         {{-- Messages container --}}
         <div
-            class="max-w-4xl mx-auto p-4 bg-yellow-50 rounded-lg shadow-md border border-yellow-200 min-h-[70vh] flex flex-col justify-between">
+            class="max-w-4xl mx-auto p-4 bg-yellow-50 rounded-lg shadow-md border border-yellow-200 min-h-[70vh] flex flex-col justify-between mb-10">
 
             {{-- messages --}}
             <section class="messages-list space-y-3 overflow-y-auto max-h-[60vh] pr-2">
@@ -32,9 +32,11 @@ $conversation->sender->username;
             </section>
 
             {{-- message input form --}}
-            <section class="send-message-form">
-                <x-selectedConversationPage.send-message-form :conversation="$conversation"/>
-            </section>
+            @can('create', [App\Models\Message::class, $conversation])
+                <section class="send-message-form">
+                    <x-selectedConversationPage.send-message-form :conversation="$conversation"/>
+                </section>                
+            @endcan
         </div>
 
     </div>

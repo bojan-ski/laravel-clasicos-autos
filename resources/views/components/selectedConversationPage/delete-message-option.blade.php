@@ -1,6 +1,6 @@
 @props(['message'])
 
-<label for="modal_{{ $message->id }}" class="text-base text-red-900 hover:text-red-700 font-bold cursor-pointer">
+<label for="modal_{{ $message->id }}" class="text-xs text-red-900 hover:text-red-700 font-bold cursor-pointer">
     <span class="hidden md:block">
         Delete
     </span>

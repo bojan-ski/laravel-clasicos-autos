@@ -39,10 +39,12 @@
                     </a>
 
                     {{-- contact car listing owner --}}
-                    <a href="{{ route('conversations.thread', [$listing, $carListingOwner->id]) }}"
-                        class="text-sm bg-red-600 hover:bg-red-700 transition duration-150 text-white px-3 py-1.5 rounded-md font-semibold cursor-pointer">
-                        Send message
-                    </a>
+                    @can('create', App\Models\Conversation::class)
+                        <a href="{{ route('conversations.thread', [$listing, $carListingOwner->id]) }}"
+                            class="text-sm bg-red-600 hover:bg-red-700 transition duration-150 text-white px-3 py-1.5 rounded-md font-semibold cursor-pointer">
+                            Send message
+                        </a>                        
+                    @endcan
                 @endif
             @else
                 <a href="{{ route('login') }}" class="block text-red-600 hover:text-red-700 hover:underline transition duration-150 font-bold">

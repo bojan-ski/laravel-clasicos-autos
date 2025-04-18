@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,15 +13,15 @@ use App\Models\Message;
 
 class MessageController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display all message related to the conversation
      */
     public function index(Conversation $conversation): View
     {
         // check if user is authorized
-        if ($conversation->sender_id != Auth::id() && $conversation->receiver_id != Auth::id()) {
-            abort(403, 'Unauthorized!');
-        }
+        $this->authorize('view', [Conversation::class, $conversation]);
 
         // get all message related to the conversation
         $messages = $conversation->messages()->with('sender')->get();
@@ -48,9 +49,7 @@ class MessageController extends Controller
     public function store(Request $request, Conversation $conversation): RedirectResponse
     {
         // check if user is authorized
-        if ($conversation->sender_id != Auth::id() && $conversation->receiver_id != Auth::id()) {
-            abort(403, 'Unauthorized!');
-        }
+        $this->authorize('create', [Message::class, $conversation]);
 
         // validate form data
         $request->validate([
@@ -78,8 +77,8 @@ class MessageController extends Controller
      */
     public function destroy(Message $message): RedirectResponse
     {
-        // // check if user is owner of the message or is admin user
-        if ($message->sender_id !== Auth::id() && Auth::user()->role !== 'admin_user') return abort(403, 'Unauthorized!');
+        // check if user is authorized
+        $this->authorize('delete', [Message::class, $message]);
 
         try {
             // delete from database

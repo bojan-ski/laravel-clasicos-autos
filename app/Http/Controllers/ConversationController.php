@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -10,6 +11,8 @@ use App\Models\CarListing;
 
 class ConversationController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display all user conversations
      */
@@ -30,10 +33,8 @@ class ConversationController extends Controller
      */
     public function conversationThread(CarListing $listing, int $receiverId): RedirectResponse
     {
-        // check if sender and receiver are not the same user
-        if (Auth::id() == $receiverId) {
-            return back()->with('error', 'You cannot message yourself!');
-        }
+        // check if user is not admin user
+        $this->authorize('create', Conversation::class);
 
         // check if existing conversation
         $existingConversation = Conversation::where(function ($query) use ($receiverId, $listing) {
