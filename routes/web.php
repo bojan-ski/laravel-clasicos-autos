@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
     Route::get('/conversations/{conversation}', [MessageController::class, 'index'])->name('conversations.show');
     Route::post('/conversations/{conversation}/store', [MessageController::class, 'store'])->name('conversations.store');
+    Route::delete('/messages/{message}/destroy', [MessageController::class, 'destroy'])->name('messages.destroy');
     
     Route::get('/listings/{listing}/message/{receiverId}', [ConversationController::class, 'conversationThread'])->name('conversations.thread');
 });

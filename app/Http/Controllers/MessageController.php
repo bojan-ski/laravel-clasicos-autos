@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Conversation;
 use App\Models\Message;
+use Illuminate\Http\RedirectResponse;
 
 class MessageController extends Controller
 {
@@ -68,6 +69,26 @@ class MessageController extends Controller
         } catch (\Exception $e) {
             // redirect user - with error msg
             return back()->with('error', 'There was an error submitting your message!');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Message $message): RedirectResponse
+    {
+        // // check if user is owner of the message or is admin user
+        if($message->sender_id !== Auth::id() && Auth::user()->role !== 'admin_user') return abort(403, 'Unauthorized!');
+
+        try {
+            // delete from database
+            $message->delete();
+
+            // redirect user - with success msg           
+            return back()->with('success', 'Message deleted.');
+        } catch (\Exception $e) {
+            // redirect user - with error msg
+            return back()->with('error', 'There was an error deleting the message!');
         }
     }
 }
