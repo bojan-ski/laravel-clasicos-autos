@@ -18,14 +18,22 @@ class ConversationController extends Controller
      */
     public function index(): View
     {
-        // get all app_user conversations from db
-        $conversations = Conversation::where('sender_id', Auth::id())
-            ->orWhere('receiver_id', Auth::id())
-            ->latest()
-            ->paginate(12);
+        if (Auth::user()->role === 'admin_user') {
+            // get all conversations from db
+            $conversations = Conversation::latest()->paginate(12);
 
-        // display/return view
-        return view('conversations.index')->with('conversations', $conversations);
+            // display/return view
+            return view('conversations.index')->with('conversations', $conversations);
+        } else {
+            // get all app_user conversations from db
+            $conversations = Conversation::where('sender_id', Auth::id())
+                ->orWhere('receiver_id', Auth::id())
+                ->latest()
+                ->paginate(12);
+
+            // display/return view
+            return view('conversations.index')->with('conversations', $conversations);
+        }
     }
 
     /**
