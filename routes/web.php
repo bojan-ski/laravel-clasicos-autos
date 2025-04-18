@@ -84,7 +84,14 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{listing}', [BookmarkController::class, 'bookmark'])->name('listings.bookmark');
     });
 
-    // app user only 
+    // conversation feature
+    Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
+    Route::get('/conversations/{conversation}', [MessageController::class, 'index'])->name('conversations.show');
+    Route::post('/conversations/{conversation}/store', [MessageController::class, 'store'])->name('conversations.store');
+    Route::delete('/messages/{message}/destroy', [MessageController::class, 'destroy'])->name('messages.destroy');
+    Route::get('/listings/{listing}/message/{receiverId}', [ConversationController::class, 'conversationThread'])->name('conversations.thread');
+
+    // APP USER ONLY
     Route::middleware(\App\Http\Middleware\AppUserMiddleware::class)->group(function () {
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
         Route::put('/profile/update_safe_word', [ProfileController::class, 'updateSafeWord'])->name('profile.updateSafeWord');
@@ -92,19 +99,11 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    // admin user only
+    // ADMIN USER ONLY
     Route::middleware(\App\Http\Middleware\AdminUserMiddleware::class)->group(function () {
         Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
         Route::get('/app_users/search', [AdminUserController::class, 'search'])->name('admin.search');
         Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');
         Route::delete('/delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
     });
-
-    // conversation feature
-    Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
-    Route::get('/conversations/{conversation}', [MessageController::class, 'index'])->name('conversations.show');
-    Route::post('/conversations/{conversation}/store', [MessageController::class, 'store'])->name('conversations.store');
-    Route::delete('/messages/{message}/destroy', [MessageController::class, 'destroy'])->name('messages.destroy');
-    
-    Route::get('/listings/{listing}/message/{receiverId}', [ConversationController::class, 'conversationThread'])->name('conversations.thread');
 });

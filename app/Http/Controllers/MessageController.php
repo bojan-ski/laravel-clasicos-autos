@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CarListing;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use App\Models\CarListing;
 use App\Models\Conversation;
 use App\Models\Message;
-use Illuminate\Http\RedirectResponse;
 
 class MessageController extends Controller
 {
     /**
      * Display all message related to the conversation
      */
-    public function index(Conversation $conversation)
+    public function index(Conversation $conversation): View
     {
         // check if user is authorized
         if ($conversation->sender_id != Auth::id() && $conversation->receiver_id != Auth::id()) {
@@ -44,7 +45,7 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage - new message
      */
-    public function store(Request $request, Conversation $conversation)
+    public function store(Request $request, Conversation $conversation): RedirectResponse
     {
         // check if user is authorized
         if ($conversation->sender_id != Auth::id() && $conversation->receiver_id != Auth::id()) {
@@ -78,7 +79,7 @@ class MessageController extends Controller
     public function destroy(Message $message): RedirectResponse
     {
         // // check if user is owner of the message or is admin user
-        if($message->sender_id !== Auth::id() && Auth::user()->role !== 'admin_user') return abort(403, 'Unauthorized!');
+        if ($message->sender_id !== Auth::id() && Auth::user()->role !== 'admin_user') return abort(403, 'Unauthorized!');
 
         try {
             // delete from database

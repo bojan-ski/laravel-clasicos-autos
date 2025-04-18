@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use App\Models\Conversation;
 use App\Models\CarListing;
 
@@ -12,9 +13,9 @@ class ConversationController extends Controller
     /**
      * Display all user conversations
      */
-    public function index()
+    public function index(): View
     {
-        // get all conversations from db
+        // get all app_user conversations from db
         $conversations = Conversation::where('sender_id', Auth::id())
             ->orWhere('receiver_id', Auth::id())
             ->latest()
@@ -27,7 +28,7 @@ class ConversationController extends Controller
     /**
      * Display conversation thread - message page
      */
-    public function conversationThread(CarListing $listing, int $receiverId)
+    public function conversationThread(CarListing $listing, int $receiverId): RedirectResponse
     {
         // check if sender and receiver are not the same user
         if (Auth::id() == $receiverId) {
@@ -44,7 +45,7 @@ class ConversationController extends Controller
                 $query->where('sender_id', $receiverId)
                     ->where('receiver_id', Auth::id())
                     ->where('listing_id', $listing->id);
-            })            
+            })
             ->first();
 
         if ($existingConversation) {
@@ -58,8 +59,8 @@ class ConversationController extends Controller
                 'listing_id' => $listing->id,
             ]);
         }
-        
-        // redirect user - MessageController
+
+        // redirect user - MessageController index method
         return redirect()->route('conversations.show', $conversation);
     }
 }
