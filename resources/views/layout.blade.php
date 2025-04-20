@@ -51,6 +51,7 @@
     <x-appLayout.footer />
 
     {{-- custom js --}}
+    <script src="{{ asset('/js/newMessagesCheck.js') }}"></script>
     <script src="{{ asset('/js/closePopUpMsg.js') }}"></script>
     <script src="{{ asset('/js/selectCarListingImage.js') }}"></script>
 </body>

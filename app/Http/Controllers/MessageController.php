@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\CarListing;
@@ -90,5 +91,27 @@ class MessageController extends Controller
             // redirect user - with error msg
             return back()->with('error', 'There was an error deleting the message!');
         }
+    }
+
+    /**
+     * Check for new messages
+     */
+    public function newMessage(): JsonResponse|RedirectResponse
+    {
+        // redirect user if in browser types the url
+        // if (!request()->ajax()) {
+        //     return redirect()->route('home.index');
+        // }
+
+        // run func 
+        $count = Message::whereHas('conversation', function ($query) {
+            $query->where('receiver_id', Auth::id())
+                ->orWhere('sender_id', Auth::id());
+        })
+            ->where('sender_id', '!=', Auth::id())
+            ->whereNull('read_at')
+            ->count();
+
+        return response()->json(['count' => $count]);
     }
 }

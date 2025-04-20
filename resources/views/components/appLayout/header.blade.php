@@ -40,9 +40,15 @@
                     </li>
                     <li class="mb-3">
                         <a href="{{ route('conversations.index') }}"
-                            class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('conversations') ? 'bg-yellow-500' : '' }}">
+                            class="relative btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('conversations') ? 'bg-yellow-500' : '' }}">
                             Conversations
                         </a>
+
+                        <!-- notification badge -->
+                        <span id="mobile-message-notification-badge"
+                            class="absolute top-0 right-0 px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full border hidden">
+                            0
+                        </span>
                     </li>
                     @if (Auth::user()->role == 'app_user')
                     <li class="mb-3">
@@ -78,8 +84,14 @@
                 Bookmarked
             </a>
             <a href="{{ route('conversations.index') }}"
-                class="btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('conversations') ? 'bg-yellow-500' : '' }}">
+                class="relative btn text-md mx-2 hover:bg-yellow-500 {{ request()->is('conversations') ? 'bg-yellow-500' : '' }}">
                 Conversations
+
+                <!-- notification badge -->
+                <span id="message-notification-badge"
+                    class="absolute top-0 right-0 px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full border hidden">
+                    0
+                </span>
             </a>
             @if (Auth::user()->role == 'app_user')
             <a href="{{ route('profile.index') }}"
