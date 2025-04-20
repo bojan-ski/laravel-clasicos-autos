@@ -20,14 +20,24 @@ class ConversationController extends Controller
     {
         if (Auth::user()->role === 'admin_user') {
             // get all conversations from db
-            $conversations = Conversation::latest()->paginate(12);
+            $conversations = Conversation::withCount(['messages as unread_count' => function ($query) {
+                $query->whereNull('read_at');
+            }])
+                ->latest()
+                ->paginate(12);
 
             // display/return view
             return view('conversations.index')->with('conversations', $conversations);
         } else {
             // get all app_user conversations from db
-            $conversations = Conversation::where('sender_id', Auth::id())
-                ->orWhere('receiver_id', Auth::id())
+            $conversations = Conversation::where(function ($query) {
+                $query->where('sender_id', Auth::id())
+                    ->orWhere('receiver_id', Auth::id());
+            })
+                ->withCount(['messages as unread_count' => function ($query) {
+                    $query->where('sender_id', '!=', Auth::id())
+                        ->whereNull('read_at');
+                }])
                 ->latest()
                 ->paginate(12);
 
