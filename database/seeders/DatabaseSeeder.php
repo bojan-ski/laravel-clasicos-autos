@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->truncate();
         DB::table('car_listings')->truncate();
         DB::table('user_bookmarks')->truncate();
+        DB::table('conversations')->truncate();
+        DB::table('messages')->truncate();
 
         // re-enable foreign key checks - error will happen if not called
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -30,5 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DummyUserSeeder::class);
         $this->call(DummyCarListingSeeder::class);
         $this->call(DummyBookmarkedCarListingSeeder::class);
+        $this->call(DummyConversationSeeder::class);
+        $this->call(DummyMessageSeeder::class);
     }
 }
