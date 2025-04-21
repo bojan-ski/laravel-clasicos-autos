@@ -21,7 +21,7 @@ class DummyBookmarkedCarListingSeeder extends Seeder
         $carListingsIds = CarListing::pluck('id')->toArray();
 
         // attach dummy bookmarks to the test user 
-        $randCarListingsIds = array_rand($carListingsIds, 10);
+        $randCarListingsIds = array_rand($carListingsIds, 30);
 
         foreach ($randCarListingsIds as $listingId) {
             $user->userBookmarks()->attach($carListingsIds[$listingId]);

@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\AdminUserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LegalController;
 use App\Http\Controllers\CarListingController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CompareController;
@@ -10,14 +11,12 @@ use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CarListingImagesController;
 use App\Http\Controllers\CarListingOwnerController;
 use App\Http\Controllers\ConversationController;
-use App\Http\Controllers\LegalController;
-
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminUserController;
 
-Route::get('/', function () {
-    return view('home.index');
-})->name('home.index');
+// home
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 // listings feature
 Route::prefix('listings')->group(function () {

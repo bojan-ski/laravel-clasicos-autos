@@ -12,7 +12,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Controllers\CarListingImagesController;
 use App\Models\CarListing;
 use App\Models\CarMaker;
-use App\Models\User;
 
 class CarListingController extends Controller
 {
