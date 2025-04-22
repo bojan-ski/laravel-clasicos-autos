@@ -4,9 +4,7 @@
 
         {{-- Logo --}}
         <div class="navbar-start">
-            <h2 class="text-4xl font-bold">
-                Clasicos Autos
-            </h2>
+            <x-logo />
         </div>
 
         {{-- mobile --}}

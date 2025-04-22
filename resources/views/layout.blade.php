@@ -57,6 +57,7 @@
     <x-appLayout.footer />
 
     {{-- custom js --}}
+    <script src="{{ asset('/js/audioLogo.js') }}"></script>
     <script src="{{ asset('/js/loading.js') }}"></script>
     <script src="{{ asset('/js/backToTop.js') }}"></script>
     <script src="{{ asset('/js/newMessagesCheck.js') }}"></script>
