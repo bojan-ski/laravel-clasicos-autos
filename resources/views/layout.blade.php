@@ -45,6 +45,9 @@
         <x-compare-button />
     @endif
 
+    {{-- back to top option - button --}}
+    <x-back-to-top-option />  
+
     {{-- MAIN - app content --}}
     <main>
         {{ $slot }}
@@ -55,6 +58,7 @@
 
     {{-- custom js --}}
     <script src="{{ asset('/js/loading.js') }}"></script>
+    <script src="{{ asset('/js/backToTop.js') }}"></script>
     <script src="{{ asset('/js/newMessagesCheck.js') }}"></script>
     <script src="{{ asset('/js/closePopUpMsg.js') }}"></script>
     <script src="{{ asset('/js/selectCarListingImage.js') }}"></script>
