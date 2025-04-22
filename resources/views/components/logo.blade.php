@@ -3,5 +3,5 @@
 </h2>
 
 <audio id="background-music" loop autoplay>
-    <source src="{{ asset('assets/audio/son-montuno-cuban-piano-music-1309.mp3') }}" type="audio/mpeg">
+    <source src="{{ asset('assets/audio/cuban-music.mp3') }}" type="audio/mpeg">
 </audio>

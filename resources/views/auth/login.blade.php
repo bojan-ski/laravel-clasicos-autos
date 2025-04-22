@@ -22,7 +22,7 @@
             </div>
 
             <div class="pl-5 border-l hidden lg:block">
-                <img src="https://placehold.co/600x500" alt="login-img">
+                <img src="{{ asset('assets/images/login.png') }}" alt="login-img" class="w-full h-[400px] object-cover">
             </div>
 
         </div>

@@ -1,13 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let musicMuted = false;
-
+    const musicKey = 'music';
     const toggleMusicButton = document.getElementById('toggle-music');
     const backgroundMusic = document.getElementById('background-music');
 
+    // play music in the background
+    function updateMusicState() {
+        const isMusicEnabled = localStorage.getItem(musicKey) !== 'false';
+        backgroundMusic.muted = !isMusicEnabled;
+    }
+
+    updateMusicState();
+
+    // toggle option
     toggleMusicButton.addEventListener('click', function () {
-        musicMuted = !musicMuted;
-        
-        backgroundMusic.muted = musicMuted;
-        console.log(musicMuted);
+        const isCurrentlyEnabled = localStorage.getItem(musicKey) !== 'false';
+
+        localStorage.setItem(musicKey, !isCurrentlyEnabled);
+
+        updateMusicState();
     });
 });
