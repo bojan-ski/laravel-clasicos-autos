@@ -24,33 +24,37 @@
 </head>
 
 <body class="bg-amber-100 relative">
-    {{-- header --}}
+    {{-- HEADER --}}
     <x-appLayout.header />
+
+    {{-- loading --}}
+    <x-loading />
 
     {{-- pop-up messages success --}}
     @if (session('success'))
-    <x-pop-up-message type='success' message="{{ session('success') }}" />
+        <x-pop-up-message type='success' message="{{ session('success') }}" />
     @endif
 
     {{-- pop-up messages error --}}
     @if (session('error'))
-    <x-pop-up-message type='error' message="{{ session('error') }}" />
+        <x-pop-up-message type='error' message="{{ session('error') }}" />
     @endif
 
     {{-- compare option - button --}}
     @if (session('compare_listings'))
-    <x-compare-button />
+        <x-compare-button />
     @endif
 
-    {{-- main - app content --}}
+    {{-- MAIN - app content --}}
     <main>
         {{ $slot }}
     </main>
 
-    {{-- footer --}}
+    {{-- FOOTER --}}
     <x-appLayout.footer />
 
     {{-- custom js --}}
+    <script src="{{ asset('/js/loading.js') }}"></script>
     <script src="{{ asset('/js/newMessagesCheck.js') }}"></script>
     <script src="{{ asset('/js/closePopUpMsg.js') }}"></script>
     <script src="{{ asset('/js/selectCarListingImage.js') }}"></script>
