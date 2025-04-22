@@ -94,10 +94,11 @@ class CarListingController extends Controller
             'images.*' => 'required|image|mimes:jpeg,jpg,png|max:10240',
         ]);
 
-        // get user ID
+        // get/set user ID
         $userId = Auth::user();
         $formData['user_id'] = $userId->id;
 
+        // create new car listing
         try {
             // begin db transaction
             DB::beginTransaction();
@@ -105,7 +106,7 @@ class CarListingController extends Controller
             // create car listing without images
             $newListing = CarListing::create(array_diff_key($formData, ['images' => '']));
 
-            // process images             
+            // process images - run processAndSaveImages method from CarListingImagesController
             $this->imagesController->processAndSaveImages($request->file('images'), $newListing);
 
             // if all is good - commit transaction
@@ -152,7 +153,9 @@ class CarListingController extends Controller
         $carMakers = CarMaker::all()->pluck('name', 'id')->toArray();
 
         // display/return view
-        return view('carListing.edit')->with('listing', $listing)->with('carMakers', $carMakers);
+        return view('carListing.edit')
+            ->with('listing', $listing)
+            ->with('carMakers', $carMakers);
     }
 
     /**
@@ -201,7 +204,7 @@ class CarListingController extends Controller
             // redirect user - with success msg
             $segments = request()->segments();
 
-            return redirect($segments[0] . '/' . $segments[2])->with('success', 'Car listing updated successfully.');
+            return redirect($segments[0] . '/' . $segments[1])->with('success', 'Car listing updated successfully.');
         } catch (\Exception $e) {
             // redirect user - with error msg
             return back()->with('error', 'There was an error updating car listing!');

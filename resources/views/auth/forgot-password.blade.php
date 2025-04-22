@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="register-page container mx-auto">
+    <div class="forgot-password-page container mx-auto">
         <div class="mt-20">
 
             {{-- page header --}}

@@ -2,7 +2,9 @@
     <div class="conversations-page container mx-auto mt-10">
 
         {{-- page header --}}
-        <x-page-header label='My Conversations' updatedClass='text-center mb-7' />
+        @if ($conversations->isNotEmpty())
+            <x-page-header label='My Conversations' updatedClass='text-center mb-7' />
+        @endif        
 
         {{-- conversations container --}}
         <section
@@ -10,7 +12,7 @@
             @forelse ($conversations as $conversation)
                 <x-conversationsPage.conversation-card :conversation="$conversation" />
             @empty
-                <x-no-data-message message="You have no active conversations." />
+                <x-no-data-message message="You have no active conversations" />
             @endforelse
         </section>
 

@@ -1,4 +1,4 @@
-<form method="POST" action="{{route('login.authenticate')}}" class="mb-5">
+<form method="POST" action="{{ route('login.authenticate') }}" class="mb-5">
     @csrf
 
     {{-- email --}}

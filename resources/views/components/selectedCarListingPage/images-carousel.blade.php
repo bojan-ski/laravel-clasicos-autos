@@ -10,12 +10,12 @@
 
     {{-- thumbnails --}}
     @if (count($images) > 1)
-    <div class="grid grid-cols-4 gap-2 mt-4">
-        @foreach($images as $image)
-        <img id="thumbnail" src="{{ Str::startsWith($image, 'http') ? $image : Storage::url($image) }}"
-            alt="car-listing-img"
-            class="w-full h-20 object-cover rounded-md border border-gray-300 hover:ring-2 ring-yellow-400 cursor-pointer">
-        @endforeach
-    </div>
+        <div class="grid grid-cols-4 gap-2 mt-4">
+            @foreach($images as $image)
+                <img id="thumbnail" src="{{ Str::startsWith($image, 'http') ? $image : Storage::url($image) }}"
+                    alt="car-listing-img"
+                    class="w-full h-20 object-cover rounded-md border border-gray-300 hover:ring-2 ring-yellow-400 cursor-pointer">
+            @endforeach
+        </div>
     @endif
 </div>

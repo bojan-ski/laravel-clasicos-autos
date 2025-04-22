@@ -11,7 +11,7 @@
 <form method="POST" action="{{ route($route, $listing) }}">
     @csrf
     @if ($method)
-    @method("DELETE")
+        @method("DELETE")
     @endif
 
     <x-input-text id='image' name='image' type='hidden'

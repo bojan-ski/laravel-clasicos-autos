@@ -18,13 +18,13 @@
     </thead>
     <tbody>
         @forelse ($appUsers as $user)
-        <x-admin.app-users-table-row :user="$user" :userListingCounts="$userListingCounts" />
+            <x-admin.app-users-table-row :user="$user" :userListingCounts="$userListingCounts" />
         @empty
-        <tr>
-            <td colspan="8" class="text-center py-4 text-gray-500">
-                <x-no-data-message message="No app users!" />
-            </td>
-        </tr>
+            <tr>
+                <td colspan="8" class="text-center py-4 text-gray-500">
+                    <x-no-data-message message="No app users!" />
+                </td>
+            </tr>
         @endforelse
     </tbody>
 </table>

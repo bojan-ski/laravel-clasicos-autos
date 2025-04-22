@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use App\Models\User;
 use App\Models\CarListing;
@@ -27,13 +27,15 @@ class AdminUserController extends Controller
             ->keyBy('user_id');
 
         // display/return view
-        return view('admin.index')->with('appUsers', $appUsers)->with('userListingCounts', $userListingCounts);
+        return view('admin.index')
+            ->with('appUsers', $appUsers)
+            ->with('userListingCounts', $userListingCounts);
     }
 
     /**
      * Search for a specific user/users - search option
      */
-    public function search(Request $request): View
+    public function searchUser(Request $request): View
     {
         // get search term
         $searchTerm = strtolower($request->get('search_term'));
@@ -59,7 +61,9 @@ class AdminUserController extends Controller
             ->keyBy('user_id');
 
         // display/return view
-        return view('admin.index')->with('appUsers', $appUsers)->with('userListingCounts', $userListingCounts);
+        return view('admin.index')
+            ->with('appUsers', $appUsers)
+            ->with('userListingCounts', $userListingCounts);
     }
 
     /**

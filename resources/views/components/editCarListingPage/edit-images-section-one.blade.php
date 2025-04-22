@@ -17,7 +17,7 @@
         <x-input-file-upload id='images' name='images' label='Add new images *' :required="true"/>
 
         <button type="submit"
-            class="mt-4 bg-blue-500 text-white px-3 py-2 rounded-md shadow hover:bg-blue-600 transition font-semibold cursor-pointer">
+            class="mt-2 bg-blue-500 text-white text-sm px-3 py-2 rounded-md shadow hover:bg-blue-600 transition font-semibold cursor-pointer">
             Add images
         </button>
     </form>

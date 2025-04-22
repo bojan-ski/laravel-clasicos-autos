@@ -16,9 +16,9 @@
             <div
                 class="car-listings {{ $userCarListings->isNotEmpty() ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7' : '' }} p-4">
                 @forelse ($userCarListings as $listing)
-                <x-car-listing-card :listing="$listing" />
+                    <x-car-listing-card :listing="$listing" />
                 @empty
-                <x-no-data-message message="You have no car listings" />
+                    <x-no-data-message message="You have no car listings" />
                 @endforelse
             </div>
 

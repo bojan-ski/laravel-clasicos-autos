@@ -16,7 +16,7 @@ class BookmarkController extends Controller
     {
         $user = Auth::user();
 
-        $bookmarkedCarListings = $user->userBookmarks()->orderBy('user_bookmarks.created_at', 'desc')->paginate(12);
+        $bookmarkedCarListings = $user->userBookmarks()->latest()->paginate(12);
 
         return view('bookmark.index')->with('bookmarkedCarListings', $bookmarkedCarListings);
     }
@@ -28,7 +28,7 @@ class BookmarkController extends Controller
     {
         $user = Auth::user();
 
-        // redirect user user if user is owner
+        // redirect user if user is owner
         if($user->id == $listing->user_id) return back();
 
         // if user is not owner

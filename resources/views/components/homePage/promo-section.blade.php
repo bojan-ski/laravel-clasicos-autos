@@ -24,9 +24,9 @@
                 <div id="{{ $listing->id }}" class="carousel-item w-full relative">
                     <img src="{{ json_decode($listing->images)[0] }}" alt="{{ $listing->name }}"
                         class="w-full h-[400px] md:h-[300px] lg:h-[250px] object-cover" />
-                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                    <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2">
                         <a href="{{ route('listings.show', $listing->id) }}"
-                            class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-md font-semibold shadow-lg">
+                            class="bg-red-600 hover:bg-red-700 transition duration-150 text-white px-5 py-2.5 rounded-md font-semibold shadow-lg">
                             Details
                         </a>
                     </div>
@@ -38,7 +38,7 @@
             <div class="flex justify-center mt-4 gap-2">
                 @foreach ($promoListings as $index => $listing)
                 <a href="#{{ $listing->id }}"
-                    class="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-full text-sm text-gray-700 hover:bg-yellow-500 hover:text-white transition">
+                    class="w-8 h-8 flex items-center justify-center bg-white border border-gray-300 rounded-full text-sm text-gray-700 hover:bg-yellow-500 hover:text-white transition duration-150">
                     {{ $index + 1 }}
                 </a>
                 @endforeach

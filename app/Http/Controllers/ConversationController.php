@@ -24,7 +24,7 @@ class ConversationController extends Controller
                 $query->whereNull('read_at');
             }])
                 ->latest()
-                ->paginate(12);
+                ->paginate(18);
 
             // display/return view
             return view('conversations.index')->with('conversations', $conversations);
@@ -39,7 +39,7 @@ class ConversationController extends Controller
                         ->whereNull('read_at');
                 }])
                 ->latest()
-                ->paginate(12);
+                ->paginate(18);
 
             // display/return view
             return view('conversations.index')->with('conversations', $conversations);

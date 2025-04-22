@@ -44,6 +44,7 @@ class CarListing extends Model
         'images',
     ];
 
+    // relation to the users table
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -9,8 +9,7 @@
 
         {{-- car maker --}}
         <x-input-select id='car_maker' name='car_maker' label='Car Maker' value="{{ request('car_maker') }}"
-            disabledOptionLabel='Select car maker'
-            :options="$makers" />
+            disabledOptionLabel='Select car maker' :options="$makers" />
 
         {{-- mileage --}}
         <x-input-text id='mileage' name='mileage' type='number' label='Mileage' value="{{ request('mileage') }}"

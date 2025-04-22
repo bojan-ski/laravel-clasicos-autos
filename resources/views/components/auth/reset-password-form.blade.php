@@ -7,7 +7,7 @@
         <x-input-text id='email' name='email' type="email" label='Email' placeholder='Enter your email'
             :required="true" />
 
-        {{-- Safe word --}}
+        {{-- safe word --}}
         <x-input-text id='safe_word' name='safe_word' label='Safe word - will be used for password reset'
             placeholder='Enter your safe word' :required="true" />
     </div>

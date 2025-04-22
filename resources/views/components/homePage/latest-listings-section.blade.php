@@ -31,12 +31,12 @@
                 class="flex justify-between absolute top-1/2 left-0 w-full px-4 transform -translate-y-1/2 pointer-events-none">
                 <button
                     onclick="document.getElementById('carousel').scrollBy({ left: -300, behavior: 'smooth' })"
-                    class="bg-white hover:bg-gray-200 text-gray-700 rounded-full shadow-md w-10 h-10 flex items-center justify-center pointer-events-auto transition cursor-pointer">
+                    class="bg-white hover:bg-yellow-500 text-gray-700 hover:text-white rounded-full shadow-md w-10 h-10 flex items-center justify-center pointer-events-auto transition cursor-pointer">
                     <i class="fa-solid fa-chevron-left"></i>
                 </button>
                 <button
                     onclick="document.getElementById('carousel').scrollBy({ left: 300, behavior: 'smooth' })"
-                    class="bg-white hover:bg-gray-200 text-gray-700 rounded-full shadow-md w-10 h-10 flex items-center justify-center pointer-events-auto transition cursor-pointer">
+                    class="bg-white hover:bg-yellow-500 text-gray-700 hover:text-white rounded-full shadow-md w-10 h-10 flex items-center justify-center pointer-events-auto transition cursor-pointer">
                     <i class="fa-solid fa-chevron-right"></i>
                 </button>
             </div>

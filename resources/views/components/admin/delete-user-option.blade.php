@@ -19,8 +19,8 @@
             <x-input-text id='app_user_id' name='app_user_id' type='hidden' value="{{ $user->id }}" />
 
             <button type="submit"
-                class="bg-red-600 text-white text-sm px-4 py-2 cursor-pointer rounded-md hover:bg-red-700 font-semibold">
-                Delete Account
+                class="bg-red-600 text-white text-sm px-4 py-2 cursor-pointer rounded-md hover:bg-red-700 transition font-semibold">
+                Delete User Account
             </button>
 
         </form>

@@ -11,7 +11,7 @@ $images = json_decode($listing->images);
 
             {{-- Edit/Delete options --}}
             @can('update', $listing)
-            <x-selectedCarListingPage.edit-delete-options :listing="$listing" />
+                <x-selectedCarListingPage.edit-delete-options :listing="$listing" />
             @endcan
         </div>
 

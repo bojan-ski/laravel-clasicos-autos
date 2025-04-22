@@ -93,7 +93,6 @@ class ProfileController extends Controller
         }
     }
 
-
     /**
      * Delete user account
      */
@@ -103,9 +102,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         // verify user/password
-        if (!password_verify($request->password, $user->password)) {
-            return redirect()->back()->with('error', 'Password is incorrect, account deletion failed.');
-        }
+        if (!password_verify($request->password, $user->password)) return back()->with('error', 'Password is incorrect, account deletion failed.');
 
         // if all is good delete account
         try {

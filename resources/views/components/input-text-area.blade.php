@@ -11,17 +11,17 @@
 
 <fieldset class="fieldset">
     @if ($label)
-    <legend class="fieldset-legend text-lg">
-        {{ $label }}
-    </legend>
+        <legend class="fieldset-legend text-lg">
+            {{ $label }}
+        </legend>
     @endif
 
     <textarea name="{{ $name }}" id="{{ $id }}" rows="{{ $rows }}" cols="{{ $cols }}" class="textarea w-full focus:outline-none"
         placeholder="{{ $placeholder }}" @if ($required) required @endif>{{ old($name, $value) }}</textarea>
 
     @error($name)
-    <p class="text-red-500 text-sm mt-1">
-        {{ $message }}
-    </p>
+        <p class="text-red-500 text-sm mt-1">
+            {{ $message }}
+        </p>
     @enderror
 </fieldset>

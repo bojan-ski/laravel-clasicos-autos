@@ -9,7 +9,7 @@
             Explore timeless cars, from Volvo to Cadillac
         </p>
         <a href="{{ route('listings') }}"
-            class="bg-red-600 hover:bg-red-700 text-white px-7 py-3 rounded-md font-bold text-lg">
+            class="bg-red-600 hover:bg-red-700 transition duration-150 text-white text-lg px-7 py-3 rounded-md font-bold">
             See offers
         </a>
     </div>

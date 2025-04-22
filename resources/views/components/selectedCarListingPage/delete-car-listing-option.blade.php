@@ -1,6 +1,6 @@
 @props(['listing'])
 
-<button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 font-semibold cursor-pointer"
+<button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition font-semibold cursor-pointer"
     onclick="delete_car_listing_modal.showModal()">
     <span class="hidden md:block">
         Delete

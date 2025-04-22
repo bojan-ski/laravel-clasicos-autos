@@ -15,9 +15,9 @@
 
 <fieldset class="fieldset {{ $css }}">
     @if ($label)
-    <legend class="fieldset-legend text-lg">
-        {{ $label }}
-    </legend>
+        <legend class="fieldset-legend text-lg">
+            {{ $label }}
+        </legend>
     @endif
 
     <input type="{{ $type }}" name="{{ $name }}" id="{{ $id }}" class="input w-full focus:outline-none"
@@ -25,8 +25,8 @@
         maxlength="{{ $maxlength }}" placeholder="{{ $placeholder }}" @if ($required) required @endif />
 
     @error($name)
-    <p class="text-red-500 text-sm mt-1">
-        {{ $message }}
-    </p>
+        <p class="text-red-500 text-sm mt-1">
+            {{ $message }}
+        </p>
     @enderror
 </fieldset>

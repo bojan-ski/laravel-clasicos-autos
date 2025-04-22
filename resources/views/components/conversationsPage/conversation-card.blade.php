@@ -16,7 +16,6 @@ $carListingName = \App\Models\CarListing::find($conversation->listing_id)?->name
            border border-gray-200 rounded-lg 
            shadow-sm hover:shadow-md hover:border-yellow-500 
            transition duration-150 mb-3">
-    
     <div>
         <p class="text-gray-800 font-semibold">
             {{ $otherUser->username }}

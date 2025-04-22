@@ -28,7 +28,6 @@
                 <strong>Total num. of listing:</strong> {{ $totalNumOfCarListings }}
             </p>
 
-            {{-- LINKS TO SEE ALL LISTINGS OWNER CAR LISTINGS AND CONTACT --}}
             @auth
                 @if (auth()->id() !== $listing->user_id)
                     {{-- see all car listing's owner car listings --}}
@@ -38,16 +37,16 @@
                         See all {{ $carListingOwner->username }}'s listings
                     </a>
 
-                    {{-- contact car listing owner --}}
+                    {{-- conversation with car listing owner --}}
                     @can('create', App\Models\Conversation::class)
                         <a href="{{ route('conversations.thread', [$listing, $carListingOwner->id]) }}"
-                            class="mt-4 text-sm bg-red-600 hover:bg-red-700 transition duration-150 text-white px-3 py-1.5 rounded-md font-semibold cursor-pointer">
+                            class="block w-max mt-2 text-sm bg-red-600 hover:bg-red-700 transition duration-150 text-white px-3 py-1.5 rounded-md font-semibold cursor-pointer">
                             Send message
                         </a>                        
                     @endcan
                 @endif
             @else
-                <a href="{{ route('login') }}" class="block text-red-600 hover:text-red-700 hover:underline transition duration-150 font-bold">
+                <a href="{{ route('login') }}" class="block mt-2 text-blue-500 hover:text-blue-600 hover:underline transition duration-150 font-bold">
                     Login to contact the seller.
                 </a>
             @endauth

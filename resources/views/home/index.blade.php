@@ -12,6 +12,6 @@
 
         {{-- Latest listings --}}
         <x-homePage.latest-listings-section :lastListings="$lastListings" />
-
     </div>
+    
 </x-layout>

@@ -3,7 +3,7 @@
 <div class="flex items-center justify-between">
     {{-- edit listing --}}
     <a href="{{ route('listings.edit', $listing) }}"
-        class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 font-semibold cursor-pointer mr-5">
+        class="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition font-semibold cursor-pointer mr-5">
         <span class="hidden md:block">
             Edit
         </span>

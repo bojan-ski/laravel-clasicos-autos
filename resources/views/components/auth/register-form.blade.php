@@ -1,26 +1,27 @@
-<form method="POST" action="{{route('register.store')}}" class="mb-5">
+<form method="POST" action="{{ route('register.store') }}" class="mb-5">
     @csrf
 
     {{-- username --}}
-    <x-input-text id='username' name='username' label='Enter your username *' placeholder='max 64 characters' :required="true" />
+    <x-input-text id='username' name='username' label='Enter your username *' placeholder='max 64 characters'
+        :required="true" />
 
     {{-- email --}}
     <x-input-text id='email' name='email' type="email" label='Enter your email *' placeholder='max 64 characters'
         :required="true" />
 
     {{-- phone number --}}
-    <x-input-text id='phone_number' name='phone_number' type="string" label='Enter your phone number *' placeholder='max 20 characters'
-        :required="true" />
+    <x-input-text id='phone_number' name='phone_number' type="string" label='Enter your phone number *'
+        placeholder='max 20 characters' :required="true" />
 
     {{-- password --}}
-    <x-input-text id='password' name='password' type="password" label='Enter your password *' placeholder='min 6 characters'
-        :required="true" />
-
-    {{-- confirm password --}}
-    <x-input-text id='password_confirmation' name='password_confirmation' type="password" label='Confirm your password *'
+    <x-input-text id='password' name='password' type="password" label='Enter your password *'
         placeholder='min 6 characters' :required="true" />
 
-    {{-- Safe word --}}
+    {{-- confirm password --}}
+    <x-input-text id='password_confirmation' name='password_confirmation' type="password"
+        label='Confirm your password *' placeholder='min 6 characters' :required="true" />
+
+    {{-- safe word --}}
     <x-input-text id='safe_word' name='safe_word' label='Enter safe word - used for password reset *'
         placeholder='max 20 characters' :required="true" />
 

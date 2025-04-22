@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class LogoutButton extends Component
+class RegisterLoginOptions extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class LogoutButton extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.appLayout.header.logout-button');
+        return view('components.appLayout.header.register-login-options');
     }
 }

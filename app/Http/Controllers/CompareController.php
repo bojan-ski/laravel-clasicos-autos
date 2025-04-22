@@ -76,6 +76,6 @@ class CompareController extends Controller
         $request->session()->forget('compare_listings');
 
         // redirect user - with success msg
-        return back()->with('success', 'Selected listings removed');
+        return back()->with('success', 'Selected listings removed.');
     }
 }

@@ -13,7 +13,7 @@
             <section
                 class="car-listings mb-10 {{ $advanceSearchResult->isNotEmpty() ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7' : '' }}">
                 @foreach ($advanceSearchResult as $listing)
-                <x-car-listing-card :listing="$listing" />
+                    <x-car-listing-card :listing="$listing" />
                 @endforeach
             </section>
 

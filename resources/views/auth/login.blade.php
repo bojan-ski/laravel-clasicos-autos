@@ -22,7 +22,7 @@
             </div>
 
             <div class="pl-5 border-l hidden lg:block">
-                <img src="https://placehold.co/600x500" alt="">
+                <img src="https://placehold.co/600x500" alt="login-img">
             </div>
 
         </div>

@@ -29,15 +29,15 @@ Route::prefix('listings')->group(function () {
         Route::get('/create', [CarListingController::class, 'create'])->name('listings.create');
         Route::post('/store', [CarListingController::class, 'store'])->name('listings.store');
 
-        Route::get('/edit/{listing}', [CarListingController::class, 'edit'])->name('listings.edit');
-        Route::put('/update/{listing}', [CarListingController::class, 'update'])->name('listings.update');
+        Route::get('/{listing}/edit', [CarListingController::class, 'edit'])->name('listings.edit');
+        Route::put('/{listing}/update', [CarListingController::class, 'update'])->name('listings.update');
 
-        Route::get('/edit_images/{listing}', [CarListingImagesController::class, 'editImages'])->name('listings.editImages');
-        Route::post('/set_as_primary_image/{listing}', [CarListingImagesController::class, 'setAsPrimaryImage'])->name('listings.setAsPrimaryImage');
-        Route::delete('/destroy_image/{listing}', [CarListingImagesController::class, 'destroyImage'])->name('listings.destroyImage');
-        Route::post('/add_new_images/{listing}', [CarListingImagesController::class, 'addNewImages'])->name('listings.addNewImages');
+        Route::get('/{listing}/edit_images', [CarListingImagesController::class, 'editImages'])->name('listings.editImages');
+        Route::post('/{listing}/set_as_primary_image', [CarListingImagesController::class, 'setAsPrimaryImage'])->name('listings.setAsPrimaryImage');
+        Route::delete('/{listing}/destroy_image', [CarListingImagesController::class, 'destroyImage'])->name('listings.destroyImage');
+        Route::post('/{listing}/add_new_images', [CarListingImagesController::class, 'addNewImages'])->name('listings.addNewImages');
 
-        Route::delete('/destroy/{listing}', [CarListingController::class, 'destroy'])->name('listings.destroy');
+        Route::delete('/{listing}/destroy', [CarListingController::class, 'destroy'])->name('listings.destroy');
     });
 
     Route::get('/{listing}', [CarListingController::class, 'show'])->name('listings.show');
@@ -47,8 +47,8 @@ Route::prefix('listings')->group(function () {
 Route::prefix('compare')->group(function () {
     Route::get('/', [CompareController::class, 'showCompare'])->name('compare.show');
     Route::get('/clear', [CompareController::class, 'clearCompare'])->name('compare.clear');
-    Route::post('/add/{listing}', [CompareController::class, 'addToCompare'])->name('compare.add');
-    Route::post('/remove/{listing}', [CompareController::class, 'removeFromCompare'])->name('compare.remove');
+    Route::post('/{listing}/add', [CompareController::class, 'addToCompare'])->name('compare.add');
+    Route::post('/{listing}/remove', [CompareController::class, 'removeFromCompare'])->name('compare.remove');
 });
 
 // see listing owner feature
@@ -87,7 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
     Route::get('/conversations/{conversation}', [MessageController::class, 'index'])->name('conversations.show');
     Route::post('/conversations/{conversation}/store', [MessageController::class, 'store'])->name('conversations.store');
-    Route::delete('/messages/{message}/destroy', [MessageController::class, 'destroy'])->name('messages.destroy');
+    Route::delete('/messages/{message}/delete_message', [MessageController::class, 'deleteMessage'])->name('messages.deleteMessage');
     Route::get('/listings/{listing}/message/{receiverId}', [ConversationController::class, 'conversationThread'])->name('conversations.thread');    
     Route::get('/new_messages', [MessageController::class, 'newMessage'])->name('messages.newMessage');
 
@@ -102,7 +102,7 @@ Route::middleware('auth')->group(function () {
     // ADMIN USER ONLY
     Route::middleware(\App\Http\Middleware\AdminUserMiddleware::class)->group(function () {
         Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
-        Route::get('/app_users/search', [AdminUserController::class, 'search'])->name('admin.search');
+        Route::get('/app_users/search', [AdminUserController::class, 'searchUser'])->name('admin.searchUser');
         Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');
         Route::delete('/delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
     });
