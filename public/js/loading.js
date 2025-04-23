@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // display loading on page navigation
     document.querySelectorAll('a').forEach(link => {
         const href = link.getAttribute('href');
-s
+
         if (!href.startsWith('#')) {
             link.addEventListener('click', function () {
                 document.getElementById('loading').classList.remove('hidden');
