@@ -28,10 +28,6 @@ class BookmarkController extends Controller
     {
         $user = Auth::user();
 
-        // redirect user if user is owner
-        if($user->id == $listing->user_id) return back();
-
-        // if user is not owner
         if ($user->userBookmarks()->where('car_listing_id', $listing->id)->exists()) {
             $user->userBookmarks()->detach($listing->id);
 

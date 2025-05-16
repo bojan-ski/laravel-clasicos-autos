@@ -83,16 +83,8 @@ class AdminUserController extends Controller
     /**
      * Delete app user account
      */
-    public function deleteUser(Request $request): RedirectResponse
+    public function deleteUser(User $user): RedirectResponse
     {
-        // get app user id
-        $user = User::where('id', $request->get('app_user_id'))->first();
-
-        // if error
-        if (!$user) {
-            return back()->with('error', 'User not found!');
-        }
-
         try {
             // delete app user from db
             $user->delete();

@@ -1,6 +1,6 @@
 @props([
-'type',
-'message'
+    'type',
+    'message'
 ])
 
 @if (session()->has($type))

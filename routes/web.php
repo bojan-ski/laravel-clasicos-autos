@@ -104,6 +104,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/app_users', [AdminUserController::class, 'index'])->name('admin.index');
         Route::get('/app_users/search', [AdminUserController::class, 'searchUser'])->name('admin.searchUser');
         Route::get('/app_users/{user}', [AdminUserController::class, 'userListings'])->name('admin.userListings');
-        Route::delete('/delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
+        Route::delete('/app_users/{user}delete_user', [AdminUserController::class, 'deleteUser'])->name('admin.deleteUser');
     });
 });

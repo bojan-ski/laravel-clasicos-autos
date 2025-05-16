@@ -30,7 +30,7 @@ class Message extends Model
     }
 
     // mark message - update the read_at field as read
-    public function markAsRead()
+    public function markAsRead(): void
     {
         if (is_null($this->read_at)) {
             $this->update(['read_at' => now()]);
