@@ -90,7 +90,7 @@ class AdminUserController extends Controller
 
         // if error
         if (!$user) {
-            return redirect()->route('admin.index')->with('error', 'User not found!');
+            return back()->with('error', 'User not found!');
         }
 
         try {

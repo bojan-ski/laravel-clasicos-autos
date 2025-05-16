@@ -2,28 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Http\Controllers\CarListingImagesController;
+use App\Http\Requests\CarListingRequest;
 use App\Models\CarListing;
 use App\Models\CarMaker;
+use App\Traits\ProcessImagesTrait;
 
 class CarListingController extends Controller
 {
     use AuthorizesRequests;
-
-    // import processAndSaveImages method from CarListingImagesController
-    protected $imagesController;
-
-    public function __construct(CarListingImagesController $imagesController)
-    {
-        $this->imagesController = $imagesController;
-    }
+    use ProcessImagesTrait;
 
     /**
      * Display a listing of the resource.
@@ -56,43 +49,13 @@ class CarListingController extends Controller
      * Store a newly created resource in storage.
      */
     // Run php artisan storage:link to create a symbolic link from public/storage to storage/app/public
-    public function store(Request $request): RedirectResponse
+    public function store(CarListingRequest $request): RedirectResponse
     {
         // check if user is not admin user
         $this->authorize('create', CarListing::class);
 
         // validate new car listing form data
-        $formData = $request->validate([
-            'name' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'car_maker' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'year' => 'required|integer|min:1900|max:' . now()->year,
-            'mileage' => 'required|integer|min:0',
-            'transmission' => 'required|string|in:Manual,Automatic',
-            'fuel_type' => 'required|string|in:Gasoline,Diesel',
-            'engine_size' => 'nullable|string|max:50',
-            'engine_type' => 'nullable|string|max:100',
-            'engine_history' => 'required|string|in:Original Engine,Replaced Engine,Rebuilt Engine',
-            'engine_condition' => 'required|string|in:Running,Needs Tuning,Not Running,Rebuilt Engine,Original Factory Engine',
-            'restoration_history' => 'required|string|in:Fully Restored,Partially Restored,Barn Find,Unrestored Original',
-            'original_parts_percentage' => 'nullable|numeric|min:0|max:100',
-            'body_type' => 'nullable|string|in:Coupe,Sedan,Convertible,Wagon',
-            'seat_material' => 'nullable|string|in:Leather,Cloth,Vinyl,Velour',
-            'odometer' => 'required|string|in:Original,Rebuilt,Unknown',
-            'license_plate_type' => 'nullable|string|in:Original Plate,Modern Plate,No Plate',
-            'documentation_status' => 'required|string|in:Original Papers,Missing Papers,Custom Registration',
-            'exterior_color' => 'nullable|string|max:50',
-            'exterior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
-            'interior_color' => 'nullable|string|max:50',
-            'interior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
-            'location_city' => 'required|string|max:100',
-            'location_state' => 'required|string|max:100',
-            'location_zipcode' => 'required|string|max:20',
-            'description' => 'required|string|max:5000',
-            'images' => 'required|array|min:1|max:8',
-            'images.*' => 'required|image|mimes:jpeg,jpg,png|max:10240',
-        ]);
+        $formData = $request->validated();
 
         // get/set user ID
         $userId = Auth::user();
@@ -106,8 +69,8 @@ class CarListingController extends Controller
             // create car listing without images
             $newListing = CarListing::create(array_diff_key($formData, ['images' => '']));
 
-            // process images - run processAndSaveImages method from CarListingImagesController
-            $this->imagesController->processAndSaveImages($request->file('images'), $newListing);
+            // process images - run processAndSaveImages method from ProcessImagesTrait
+            $this->processAndSaveImages($request->file('images'), $newListing);
 
             // if all is good - commit transaction
             DB::commit();
@@ -161,41 +124,13 @@ class CarListingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CarListing $listing)
+    public function update(CarListingRequest $request, CarListing $listing)
     {
         // check if user is owner of the car listing or is admin user
         $this->authorize('update', $listing);
 
         // validate new car listing form data
-        $formData = $request->validate([
-            'name' => 'required|string|max:255',
-            'model' => 'required|string|max:255',
-            'car_maker' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'year' => 'required|integer|min:1900|max:' . now()->year,
-            'mileage' => 'required|integer|min:0',
-            'transmission' => 'required|string|in:Manual,Automatic',
-            'fuel_type' => 'required|string|in:Gasoline,Diesel',
-            'engine_size' => 'nullable|string|max:50',
-            'engine_type' => 'nullable|string|max:100',
-            'engine_history' => 'required|string|in:Original Engine,Replaced Engine,Rebuilt Engine',
-            'engine_condition' => 'required|string|in:Running,Needs Tuning,Not Running,Rebuilt Engine,Original Factory Engine',
-            'restoration_history' => 'required|string|in:Fully Restored,Partially Restored,Barn Find,Unrestored Original',
-            'original_parts_percentage' => 'nullable|numeric|min:0|max:100',
-            'body_type' => 'nullable|string|in:Coupe,Sedan,Convertible,Wagon',
-            'seat_material' => 'nullable|string|in:Leather,Cloth,Vinyl,Velour',
-            'odometer' => 'required|string|in:Original,Rebuilt,Unknown',
-            'license_plate_type' => 'nullable|string|in:Original Plate,Modern Plate,No Plate',
-            'documentation_status' => 'required|string|in:Original Papers,Missing Papers,Custom Registration',
-            'exterior_color' => 'nullable|string|max:50',
-            'exterior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
-            'interior_color' => 'nullable|string|max:50',
-            'interior_condition' => 'nullable|string|in:Showroom Condition,Good,Fair,Needs Restoration',
-            'location_city' => 'required|string|max:100',
-            'location_state' => 'required|string|max:100',
-            'location_zipcode' => 'required|string|max:20',
-            'description' => 'required|string|max:5000'
-        ]);
+        $formData = $request->validated();
 
         try {
             // update car listing without updating images

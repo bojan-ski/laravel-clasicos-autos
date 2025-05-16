@@ -3,12 +3,6 @@
 'userListingCounts'
 ])
 
-@php
-if(session()->has('car_listing_owner_id')){
-session()->forget('car_listing_owner_id');
-}
-@endphp
-
 <tr class="hover:bg-yellow-50 border-b border-gray-100">
     <td class="px-4 py-2 font-medium">
         {{ $user->id }}
